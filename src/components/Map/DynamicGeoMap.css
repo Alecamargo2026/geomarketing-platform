@@ -1,0 +1,181 @@
+.dynamic-geo-map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.map-container {
+  width: 100%;
+  height: 100%;
+}
+
+.map-container :global(.leaflet-container) {
+  font-family: var(--font-family);
+  background-color: var(--color-bg-secondary);
+}
+
+.map-container :global(.leaflet-popup-content-wrapper) {
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.map-container :global(.leaflet-popup-tip) {
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+}
+
+.cluster-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #3b82f6, #1e40af);
+  border: 3px solid white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+  transition: all var(--transition-normal);
+  font-weight: bold;
+  color: white;
+  font-size: 12px;
+}
+
+.cluster-marker:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.6);
+}
+
+.cluster-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.map-marker {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 3px solid white;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-marker:hover {
+  transform: scale(1.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.map-marker.client {
+  background-color: #3b82f6;
+}
+
+.map-marker.competitor {
+  background-color: #ef4444;
+}
+
+.map-marker.neighborhood {
+  background-color: #10b981;
+}
+
+.marker-inner {
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.cluster-popup,
+.marker-popup {
+  padding: 8px;
+  font-size: 12px;
+}
+
+.cluster-popup strong,
+.marker-popup strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--color-text-primary);
+}
+
+.cluster-popup p,
+.marker-popup p {
+  margin: 4px 0;
+  color: var(--color-text-secondary);
+}
+
+.marker-data {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-border);
+}
+
+.marker-data p {
+  margin: 2px 0;
+  font-size: 11px;
+}
+
+.map-info {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  display: flex;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 400;
+}
+
+.map-info span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .map-info {
+    background-color: rgba(30, 30, 30, 0.95);
+    border-color: var(--color-border);
+  }
+}
+
+@media (max-width: 768px) {
+  .dynamic-geo-map {
+    min-height: 400px;
+  }
+
+  .map-info {
+    bottom: 8px;
+    right: 8px;
+    padding: 8px 12px;
+    font-size: 11px;
+    gap: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cluster-marker,
+  .map-marker {
+    transition: none;
+  }
+
+  .cluster-marker:hover,
+  .map-marker:hover {
+    transform: none;
+  }
+}
