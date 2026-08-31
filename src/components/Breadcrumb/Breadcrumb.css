@@ -1,0 +1,180 @@
+/* ============================================================================
+   BREADCRUMB STYLES - PROFESSIONAL GEOMARKETING DASHBOARD
+   ============================================================================
+   Padrões WCAG 2.1 AA para navegação
+   ============================================================================ */
+
+.breadcrumb {
+  display: block;
+  padding: 8px 0;
+}
+
+.breadcrumb__list {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+/* ============================================================================
+   BREADCRUMB ITEM
+   ============================================================================ */
+
+.breadcrumb__item {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+/* ============================================================================
+   BREADCRUMB LINK
+   ============================================================================ */
+
+.breadcrumb__link {
+  padding: 4px 8px;
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color var(--transition-normal);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.breadcrumb__link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.breadcrumb__link:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.breadcrumb__link[aria-disabled='true'] {
+  color: var(--color-text-light);
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* ============================================================================
+   BREADCRUMB TEXT
+   ============================================================================ */
+
+.breadcrumb__text {
+  padding: 4px 8px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.breadcrumb__text--current {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.breadcrumb__text--disabled {
+  color: var(--color-text-light);
+  opacity: 0.5;
+}
+
+/* ============================================================================
+   BREADCRUMB SEPARATOR
+   ============================================================================ */
+
+.breadcrumb__separator {
+  padding: 0 4px;
+  color: var(--color-text-light);
+  font-size: 14px;
+  user-select: none;
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .breadcrumb__link,
+  .breadcrumb__text {
+    font-size: 13px;
+    padding: 3px 6px;
+  }
+
+  .breadcrumb__separator {
+    font-size: 13px;
+    padding: 0 3px;
+  }
+}
+
+@media (max-width: 480px) {
+  .breadcrumb {
+    padding: 6px 0;
+  }
+
+  .breadcrumb__link,
+  .breadcrumb__text {
+    font-size: 12px;
+    padding: 2px 4px;
+  }
+
+  .breadcrumb__separator {
+    font-size: 12px;
+    padding: 0 2px;
+  }
+
+  /* Truncar breadcrumb em mobile */
+  .breadcrumb__list {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ============================================================================
+   DARK MODE
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .breadcrumb__link {
+    color: #60a5fa;
+  }
+
+  .breadcrumb__link:hover {
+    color: #93c5fd;
+  }
+
+  .breadcrumb__text {
+    color: #94a3b8;
+  }
+
+  .breadcrumb__text--current {
+    color: #f1f5f9;
+  }
+
+  .breadcrumb__separator {
+    color: #64748b;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .breadcrumb__link {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .breadcrumb__link {
+    text-decoration: underline;
+  }
+
+  .breadcrumb__text--current {
+    font-weight: 700;
+  }
+}
