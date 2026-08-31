@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 
 export default function LoginPage() {
   const router = useRouter()
-  const { setUser, setToken, setIsLoading } = useAuthStore()
+  const { setUser, setToken } = useAuthStore()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
