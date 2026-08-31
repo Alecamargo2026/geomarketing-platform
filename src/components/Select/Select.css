@@ -1,0 +1,571 @@
+/* ============================================================================
+   SELECT STYLES - PROFESSIONAL GEOMARKETING DASHBOARD
+   ============================================================================
+   Padrões WCAG 2.1 AA com dropdown customizado
+   ============================================================================ */
+
+.select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: auto;
+  position: relative;
+}
+
+.select-group--full-width {
+  width: 100%;
+}
+
+/* ============================================================================
+   SELECT LABEL
+   ============================================================================ */
+
+.select__label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.select__required {
+  color: var(--color-danger);
+  margin-left: 2px;
+}
+
+/* ============================================================================
+   SELECT WRAPPER
+   ============================================================================ */
+
+.select__wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* ============================================================================
+   SELECT BUTTON
+   ============================================================================ */
+
+.select {
+  /* Layout */
+  width: 100%;
+  padding: 10px 12px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  /* Tipografia */
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  text-align: left;
+
+  /* Aparência */
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-white);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+
+  /* Acessibilidade */
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.select:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.select:hover:not(:disabled) {
+  border-color: #94a3b8;
+}
+
+.select:disabled {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-light);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.select--open {
+  border-color: var(--color-primary);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* ============================================================================
+   SELECT VARIANTS
+   ============================================================================ */
+
+.select--default {
+  border: 1px solid #cbd5e1;
+}
+
+.select--filled {
+  background-color: var(--color-bg-light);
+  border: 1px solid transparent;
+  border-bottom: 2px solid #cbd5e1;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.select--filled:focus {
+  border-bottom-color: var(--color-primary);
+  background-color: #f8fafc;
+}
+
+.select--outlined {
+  border: 2px solid #cbd5e1;
+}
+
+.select--outlined:focus {
+  border-color: var(--color-primary);
+}
+
+/* ============================================================================
+   SELECT SIZES
+   ============================================================================ */
+
+.select--sm {
+  height: 32px;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.select--md {
+  height: 40px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.select--lg {
+  height: 48px;
+  padding: 12px 16px;
+  font-size: 15px;
+}
+
+/* ============================================================================
+   SELECT ICON
+   ============================================================================ */
+
+.select--with-icon {
+  padding-left: 36px;
+}
+
+.select__icon {
+  position: absolute;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+.select__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 2;
+}
+
+/* ============================================================================
+   SELECT VALUE & ARROW
+   ============================================================================ */
+
+.select__value {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+  color: var(--color-text-secondary);
+  transition: transform var(--transition-normal);
+  flex-shrink: 0;
+}
+
+.select--open .select__arrow {
+  transform: rotate(180deg);
+}
+
+/* ============================================================================
+   SELECT CLEAR BUTTON
+   ============================================================================ */
+
+.select__clear {
+  position: absolute;
+  right: 32px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-size: 14px;
+  transition: color var(--transition-normal);
+}
+
+.select__clear:hover {
+  color: var(--color-text-primary);
+}
+
+/* ============================================================================
+   SELECT STATUS
+   ============================================================================ */
+
+.select--with-status {
+  padding-right: 36px;
+}
+
+.select__status {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.select__status--loading {
+  color: var(--color-primary);
+}
+
+.select__spinner {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.select__status--error {
+  color: var(--color-danger);
+}
+
+/* ============================================================================
+   SELECT ERROR STATE
+   ============================================================================ */
+
+.select--error {
+  border-color: var(--color-danger);
+  background-color: #fef2f2;
+}
+
+.select--error:focus {
+  outline-color: var(--color-danger);
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* ============================================================================
+   SELECT DROPDOWN
+   ============================================================================ */
+
+.select__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: var(--color-bg-white);
+  border: 1px solid #cbd5e1;
+  border-top: none;
+  border-bottom-left-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-height: 300px;
+  overflow-y: auto;
+  animation: slideDown 200ms ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================================
+   SELECT SEARCH
+   ============================================================================ */
+
+.select__search {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 14px;
+  font-family: inherit;
+  background-color: var(--color-bg-white);
+  outline: none;
+  transition: background-color var(--transition-normal);
+}
+
+.select__search:focus {
+  background-color: #f8fafc;
+}
+
+/* ============================================================================
+   SELECT OPTIONS
+   ============================================================================ */
+
+.select__options {
+  padding: 4px 0;
+}
+
+.select__group-label {
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.select__option {
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  color: var(--color-text-primary);
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color var(--transition-normal);
+}
+
+.select__option:hover:not(:disabled) {
+  background-color: var(--color-bg-light);
+}
+
+.select__option--selected {
+  background-color: rgba(37, 99, 235, 0.1);
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.select__option--disabled {
+  color: var(--color-text-light);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.select__checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--color-primary);
+}
+
+/* ============================================================================
+   SELECT EMPTY STATE
+   ============================================================================ */
+
+.select__empty {
+  padding: 16px 12px;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+/* ============================================================================
+   SELECT MESSAGES
+   ============================================================================ */
+
+.select__error {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-danger);
+  font-weight: 500;
+}
+
+.select__hint {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .select {
+    font-size: 16px; /* Previne zoom em iOS */
+  }
+
+  .select__dropdown {
+    max-height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .select {
+    font-size: 16px;
+  }
+
+  .select--sm {
+    height: 36px;
+  }
+
+  .select--md {
+    height: 44px;
+  }
+
+  .select--lg {
+    height: 52px;
+  }
+
+  .select__dropdown {
+    max-height: 200px;
+  }
+}
+
+/* ============================================================================
+   DARK MODE
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .select {
+    background-color: #1e293b;
+    border-color: #475569;
+    color: #f1f5f9;
+  }
+
+  .select:hover:not(:disabled) {
+    border-color: #64748b;
+  }
+
+  .select:disabled {
+    background-color: #0f172a;
+    color: #64748b;
+  }
+
+  .select--filled {
+    background-color: #0f172a;
+    border-bottom-color: #475569;
+  }
+
+  .select--filled:focus {
+    background-color: #1e293b;
+  }
+
+  .select__dropdown {
+    background-color: #1e293b;
+    border-color: #475569;
+  }
+
+  .select__search {
+    background-color: #1e293b;
+    border-bottom-color: #475569;
+    color: #f1f5f9;
+  }
+
+  .select__search:focus {
+    background-color: #0f172a;
+  }
+
+  .select__option:hover:not(:disabled) {
+    background-color: #334155;
+  }
+
+  .select__option--selected {
+    background-color: rgba(37, 99, 235, 0.2);
+  }
+
+  .select__group-label {
+    color: #94a3b8;
+  }
+
+  .select__empty {
+    color: #94a3b8;
+  }
+
+  .select__error {
+    color: #fca5a5;
+  }
+
+  .select__hint {
+    color: #cbd5e1;
+  }
+
+  .select__arrow,
+  .select__clear {
+    color: #94a3b8;
+  }
+
+  .select__clear:hover {
+    color: #f1f5f9;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .select {
+    transition: none;
+  }
+
+  .select__dropdown {
+    animation: none;
+  }
+
+  .select__arrow {
+    transition: none;
+  }
+
+  .select__option {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .select {
+    border-width: 2px;
+  }
+
+  .select--filled {
+    border-bottom-width: 3px;
+  }
+
+  .select--outlined {
+    border-width: 2px;
+  }
+}
