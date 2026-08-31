@@ -1,0 +1,298 @@
+================================================================================
+PLANO DE AÇÃO - ETAPAS 3-10 (FINALIZAÇÃO DO PROJETO)
+================================================================================
+
+Status: EM PROGRESSO
+Objetivo: Completar o sistema de geomarketing dinâmico até o final
+
+================================================================================
+ETAPA 3: FLUXOS DE UX (6 FLUXOS)
+================================================================================
+
+Fluxo 1: Login/Autenticação
+- Estados: 8 (inicial, validando, sucesso, erro, MFA, recuperação, biometria, sessão expirada)
+- Modais: 3 (esqueci senha, 2FA, logout)
+- Componentes: Input, Button, Modal, Alert, Spinner
+- Arquivo: src/flows/AuthFlow.tsx
+
+Fluxo 2: Importação de Dados
+- Estados: 10 (seleção, validação, mapeamento, pré-visualização, confirmação, processamento, geocodificação, sincronização, sucesso, erro)
+- Modais: 5 (seletor arquivo, mapeamento, pré-visualização, confirmação, resultado)
+- Componentes: Input, Select, Modal, Table, ProgressBar, Alert
+- Arquivo: src/flows/ImportFlow.tsx
+
+Fluxo 3: Navegação no Mapa
+- Estados: 9 (Brasil, estado, cidade, bairro, marcador, filtro, busca, detalhes, exportação)
+- Modais: 4 (filtros, detalhes bairro, detalhes cliente, confirmação)
+- Componentes: Map, Filter, Modal, Card, Button
+- Arquivo: src/flows/MapFlow.tsx
+
+Fluxo 4: Expansão de Card
+- Estados: 5 (colapsado, hover, clique, expandido, fechando)
+- Modais: 4 (detalhes, edição, confirmação, sucesso/erro)
+- Componentes: Card, Modal, Button, Input
+- Arquivo: src/flows/CardFlow.tsx
+
+Fluxo 5: Criação de Rota
+- Estados: 7 (seleção clientes, otimização, pré-visualização, confirmação, processamento, sucesso, erro)
+- Modais: 6 (seletor clientes, opções, pré-visualização, confirmação, resultado, exportação)
+- Componentes: Select, Modal, Map, Button, Table
+- Arquivo: src/flows/RouteFlow.tsx
+
+Fluxo 6: Exportação de Relatório
+- Estados: 7 (seleção dados, seleção formato, configuração, pré-visualização, processamento, sucesso, erro)
+- Modais: 7 (seletor dados, seletor formato, configuração, pré-visualização, confirmação, resultado, download)
+- Componentes: Select, Modal, Button, Table, Filter
+- Arquivo: src/flows/ExportFlow.tsx
+
+================================================================================
+ETAPA 4: NAVEGAÇÃO (6 COMPONENTES)
+================================================================================
+
+1. Sidebar Responsiva
+   - Colapsável (desktop), Drawer (mobile)
+   - Submenu com indicadores
+   - Ícones + rótulos
+   - Arquivo: src/components/Navigation/Sidebar.tsx
+
+2. Top Navigation
+   - Logo + título
+   - Busca global
+   - Notificações
+   - Perfil do usuário
+   - Tema (light/dark)
+   - Arquivo: src/components/Navigation/TopNav.tsx
+
+3. Breadcrumb (já implementado)
+   - Trilha de navegação
+   - Clicável
+   - Separadores customizáveis
+
+4. Mobile Drawer
+   - Menu hambúrguer
+   - Overlay
+   - Animação suave
+   - Arquivo: src/components/Navigation/MobileDrawer.tsx
+
+5. Bottom Navigation (Mobile)
+   - 3-5 itens principais
+   - Ícones + rótulos
+   - Indicador de ativo
+   - Arquivo: src/components/Navigation/BottomNav.tsx
+
+6. Dashboard Layout
+   - Combina Sidebar + TopNav + Breadcrumb
+   - Responsivo
+   - Acessível
+   - Arquivo: src/components/Layout/DashboardLayout.tsx
+
+================================================================================
+ETAPA 5: CARDS DINÂMICOS
+================================================================================
+
+1. Card Expansível
+   - Colapsado (resumo)
+   - Hover (preview)
+   - Expandido (dados completos)
+   - Carregando (skeleton)
+   - Erro (retry)
+   - Arquivo: src/components/Card/ExpandableCard.tsx
+
+2. Card de Bairro
+   - Nome, cidade, estado
+   - Clientes, faturamento, cobertura
+   - Potencial, concorrentes
+   - Ações (detalhes, rota, exportar)
+   - Arquivo: src/components/Card/NeighborhoodCard.tsx
+
+3. Card de Cliente
+   - Nome/Razão Social, CNPJ
+   - Telefone, endereço
+   - Faturamento, última compra
+   - Frequência, prioridade
+   - Arquivo: src/components/Card/CustomerCard.tsx
+
+================================================================================
+ETAPA 6: MAPAS INTERATIVOS
+================================================================================
+
+1. Mapa com Zoom Progressivo
+   - Brasil (zoom 4) → Estados → Cidades → Bairros → Clientes
+   - Clique em região → detalhes
+   - Filtros dinâmicos
+   - Heatmap de cobertura
+   - Clustering (Supercluster)
+   - Sincronização RT
+   - Arquivo: src/components/Map/DynamicGeoMap.tsx
+
+2. Marcadores Dinâmicos
+   - Tipos: Bairro, Cliente, Concorrente, Rota
+   - Dados: Nome, contagem, faturamento, cobertura
+   - Ações: Clique → detalhes
+   - Arquivo: src/components/Map/DynamicMarker.tsx
+
+3. Popup Dinâmico
+   - Título, dados principais
+   - Botões de ação
+   - Responsivo (popup/modal)
+   - Arquivo: src/components/Map/DynamicPopup.tsx
+
+4. Painel de Detalhes
+   - Abas: Visão Geral, Clientes, Análise, Concorrentes
+   - KPIs, gráficos, tabelas
+   - Arquivo: src/components/Map/DetailsPanel.tsx
+
+================================================================================
+ETAPA 7: INTEGRAÇÃO DE DADOS REAIS
+================================================================================
+
+1. API de Dados do Mapa
+   - GET /api/map/neighborhoods
+   - Retorna: neighborhoods, summary
+   - Filtros: state, city, zoom, potentialMin
+   - Arquivo: src/app/api/map/neighborhoods/route.ts
+
+2. Hook de Dados do Mapa
+   - useMapData(options)
+   - Retorna: neighborhoods, summary, loading, error
+   - Arquivo: src/hooks/useMapData.ts
+
+3. Sincronização em Tempo Real
+   - useRealtimeMap(options)
+   - Supabase Realtime
+   - WebSocket
+   - Arquivo: src/hooks/useRealtimeMap.ts
+
+4. Banco de Dados
+   - PostGIS para geometrias
+   - Tabelas: GeoNeighborhood, CustomerLocation, GeoMetadata, GeoCompetitor
+   - Triggers automáticos
+   - Arquivo: prisma/migrations/add_postgis_tables.sql
+
+================================================================================
+ETAPA 8: TESTES COMPLETOS
+================================================================================
+
+1. Testes Unitários
+   - Jest + React Testing Library
+   - Componentes, hooks, funções utilitárias
+   - Target: 100% coverage
+
+2. Testes de Integração
+   - Cypress para fluxos de UX
+   - Supertest para APIs
+   - Prisma para banco de dados
+
+3. Testes de Acessibilidade
+   - axe-core (automático)
+   - WAVE (manual)
+   - Screen reader (NVDA, JAWS)
+
+4. Testes de Performance
+   - Lighthouse
+   - Web Vitals
+   - Bundle size
+
+5. Testes de Segurança
+   - OWASP Top 10
+   - Sanitização de inputs
+   - CSRF protection
+   - XSS prevention
+
+================================================================================
+ETAPA 9: DEPLOY EM PRODUÇÃO
+================================================================================
+
+1. Configuração do Vercel
+   - Environment variables
+   - Build settings
+   - Deployment triggers
+
+2. Configuração do Banco de Dados
+   - Supabase PostgreSQL
+   - PostGIS extension
+   - Backups automáticos
+
+3. Configuração de CDN
+   - Vercel Edge Network
+   - Cache headers
+   - Compression
+
+4. Monitoramento
+   - Sentry para erros
+   - LogRocket para sessões
+   - Datadog para performance
+
+================================================================================
+ETAPA 10: DOCUMENTAÇÃO FINAL
+================================================================================
+
+1. README.md
+   - Descrição do projeto
+   - Como instalar
+   - Como usar
+   - Exemplos de código
+
+2. Documentação de Componentes
+   - Storybook
+   - Props documentation
+   - Exemplos de uso
+
+3. Documentação de APIs
+   - OpenAPI/Swagger
+   - Endpoints
+   - Parâmetros
+   - Respostas
+
+4. Guia de Contribuição
+   - Como contribuir
+   - Padrões de código
+   - Processo de review
+
+================================================================================
+CRONOGRAMA ESTIMADO
+================================================================================
+
+Etapa 3 (Fluxos UX): 3-4 dias
+Etapa 4 (Navegação): 2-3 dias
+Etapa 5 (Cards Dinâmicos): 2-3 dias
+Etapa 6 (Mapas Interativos): 3-4 dias
+Etapa 7 (Dados Reais): 2-3 dias
+Etapa 8 (Testes): 2-3 dias
+Etapa 9 (Deploy): 1-2 dias
+Etapa 10 (Documentação): 1-2 dias
+
+Total: 16-24 dias
+
+================================================================================
+PRÓXIMAS AÇÕES IMEDIATAS
+================================================================================
+
+1. ✅ Etapa 2: Componentes React (24/24 COMPLETO)
+2. ⏳ Etapa 3: Fluxos de UX (PRÓXIMO)
+   - Criar AuthFlow.tsx
+   - Criar ImportFlow.tsx
+   - Criar MapFlow.tsx
+   - Criar CardFlow.tsx
+   - Criar RouteFlow.tsx
+   - Criar ExportFlow.tsx
+
+3. ⏳ Etapa 4: Navegação
+   - Criar Sidebar.tsx
+   - Criar TopNav.tsx
+   - Criar MobileDrawer.tsx
+   - Criar BottomNav.tsx
+   - Criar DashboardLayout.tsx
+
+4. ⏳ Etapa 5: Cards Dinâmicos
+   - Criar ExpandableCard.tsx
+   - Criar NeighborhoodCard.tsx
+   - Criar CustomerCard.tsx
+
+5. ⏳ Etapa 6: Mapas Interativos
+   - Criar DynamicGeoMap.tsx
+   - Criar DynamicMarker.tsx
+   - Criar DynamicPopup.tsx
+   - Criar DetailsPanel.tsx
+
+================================================================================
