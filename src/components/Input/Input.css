@@ -1,0 +1,411 @@
+/* ============================================================================
+   INPUT STYLES - PROFESSIONAL GEOMARKETING DASHBOARD
+   ============================================================================
+   Padrões WCAG 2.1 AA com validação visual
+   ============================================================================ */
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: auto;
+}
+
+.input-group--full-width {
+  width: 100%;
+}
+
+/* ============================================================================
+   INPUT LABEL
+   ============================================================================ */
+
+.input__label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.input__required {
+  color: var(--color-danger);
+  margin-left: 2px;
+}
+
+/* ============================================================================
+   INPUT WRAPPER
+   ============================================================================ */
+
+.input__wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* ============================================================================
+   INPUT BASE
+   ============================================================================ */
+
+.input {
+  /* Layout */
+  width: 100%;
+  padding: 10px 12px;
+  height: 40px;
+
+  /* Tipografia */
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+
+  /* Aparência */
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-white);
+  transition: all var(--transition-normal);
+
+  /* Acessibilidade */
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.input::placeholder {
+  color: var(--color-text-light);
+}
+
+.input:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.input:hover:not(:disabled) {
+  border-color: #94a3b8;
+}
+
+.input:disabled {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-light);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ============================================================================
+   INPUT VARIANTS
+   ============================================================================ */
+
+/* DEFAULT */
+.input--default {
+  border: 1px solid #cbd5e1;
+}
+
+/* FILLED */
+.input--filled {
+  background-color: var(--color-bg-light);
+  border: 1px solid transparent;
+  border-bottom: 2px solid #cbd5e1;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.input--filled:focus {
+  border-bottom-color: var(--color-primary);
+  background-color: #f8fafc;
+}
+
+/* OUTLINED */
+.input--outlined {
+  border: 2px solid #cbd5e1;
+}
+
+.input--outlined:focus {
+  border-color: var(--color-primary);
+}
+
+/* ============================================================================
+   INPUT SIZES
+   ============================================================================ */
+
+.input--sm {
+  height: 32px;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+.input--md {
+  height: 40px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.input--lg {
+  height: 48px;
+  padding: 12px 16px;
+  font-size: 15px;
+}
+
+/* ============================================================================
+   INPUT WITH ICON
+   ============================================================================ */
+
+.input--icon-left {
+  padding-left: 36px;
+}
+
+.input--icon-right {
+  padding-right: 36px;
+}
+
+.input__icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+.input__icon--left {
+  left: 10px;
+}
+
+.input__icon--right {
+  right: 10px;
+}
+
+.input__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 2;
+}
+
+/* ============================================================================
+   INPUT WITH STATUS
+   ============================================================================ */
+
+.input--with-status {
+  padding-right: 36px;
+}
+
+.input__status {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.input__status--loading {
+  color: var(--color-primary);
+}
+
+.input__spinner {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.input__status--success {
+  color: var(--color-success);
+  animation: scaleIn 300ms ease-out;
+}
+
+.input__status--error {
+  color: var(--color-danger);
+  animation: shake 300ms ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+/* ============================================================================
+   INPUT ERROR STATE
+   ============================================================================ */
+
+.input--error {
+  border-color: var(--color-danger);
+  background-color: #fef2f2;
+}
+
+.input--error:focus {
+  outline-color: var(--color-danger);
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* ============================================================================
+   INPUT MESSAGES
+   ============================================================================ */
+
+.input__error {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-danger);
+  font-weight: 500;
+}
+
+.input__hint {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .input {
+    font-size: 16px; /* Previne zoom em iOS */
+  }
+
+  .input--md {
+    height: 44px;
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .input {
+    font-size: 16px;
+  }
+
+  .input--sm {
+    height: 36px;
+  }
+
+  .input--md {
+    height: 44px;
+  }
+
+  .input--lg {
+    height: 52px;
+  }
+}
+
+/* ============================================================================
+   DARK MODE
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .input {
+    background-color: #1e293b;
+    border-color: #475569;
+    color: #f1f5f9;
+  }
+
+  .input::placeholder {
+    color: #94a3b8;
+  }
+
+  .input:hover:not(:disabled) {
+    border-color: #64748b;
+  }
+
+  .input:disabled {
+    background-color: #0f172a;
+    color: #64748b;
+  }
+
+  .input--filled {
+    background-color: #0f172a;
+    border-bottom-color: #475569;
+  }
+
+  .input--filled:focus {
+    background-color: #1e293b;
+  }
+
+  .input--outlined {
+    border-color: #475569;
+  }
+
+  .input__icon {
+    color: #94a3b8;
+  }
+
+  .input--error {
+    border-color: var(--color-danger);
+    background-color: rgba(239, 68, 68, 0.1);
+  }
+
+  .input__error {
+    color: #fca5a5;
+  }
+
+  .input__hint {
+    color: #cbd5e1;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .input {
+    transition: none;
+  }
+
+  .input__spinner {
+    animation: none;
+  }
+
+  .input__status--success {
+    animation: none;
+  }
+
+  .input__status--error {
+    animation: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .input {
+    border-width: 2px;
+  }
+
+  .input--filled {
+    border-bottom-width: 3px;
+  }
+
+  .input--outlined {
+    border-width: 2px;
+  }
+}
