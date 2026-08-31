@@ -1,8 +1,9 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useAuthStore } from '@/store/authStore'
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 export default function ProtectedLayout({
   children,
@@ -10,6 +11,7 @@ export default function ProtectedLayout({
   children: React.ReactNode
 }) {
   const router = useRouter()
+  const pathname = usePathname()
   const { user, isLoading } = useAuthStore()
   const [mounted, setMounted] = useState(false)
 
@@ -39,26 +41,45 @@ export default function ProtectedLayout({
     router.push('/login')
   }
 
+  const navItems = [
+    { href: '/dashboard', label: '📊 Dashboard' },
+    { href: '/import', label: '📥 Importar Dados' },
+    { href: '/customers', label: '👥 Clientes' },
+    { href: '/demographics', label: '📈 Análise Demográfica' },
+    { href: '/white-zones', label: '🗺️ Zonas Brancas' },
+    { href: '/priorities', label: '⭐ Prioridades' },
+    { href: '/settings', label: '⚙️ Configurações' },
+  ]
+
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-lg overflow-y-auto">
+      <aside className="w-64 bg-white shadow-lg overflow-y-auto flex flex-col">
         <div className="p-6 border-b border-gray-200">
           <h1 className="text-2xl font-bold text-blue-600">GeoMarketing</h1>
           <p className="text-xs text-gray-500 mt-1">Inteligência Comercial</p>
         </div>
         
-        <nav className="p-4 space-y-2">
-          <NavLink href="/dashboard" label="📊 Dashboard" />
-          <NavLink href="/import" label="📥 Importar Dados" />
-          <NavLink href="/customers" label="👥 Clientes" />
-          <NavLink href="/demographics" label="📈 Análise Demográfica" />
-          <NavLink href="/white-zones" label="🗺️ Zonas Brancas" />
-          <NavLink href="/priorities" label="⭐ Prioridades" />
-          <NavLink href="/settings" label="⚙️ Configurações" />
+        <nav className="flex-1 p-4 space-y-2">
+          {navItems.map((item) => {
+            const isActive = pathname === item.href
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`block px-4 py-2 rounded-lg transition ${
+                  isActive
+                    ? 'bg-blue-100 text-blue-700 font-semibold'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                {item.label}
+              </Link>
+            )
+          })}
         </nav>
 
-        <div className="p-4 border-t border-gray-200 mt-auto">
+        <div className="p-4 border-t border-gray-200">
           <div className="bg-gray-50 rounded-lg p-3 mb-4">
             <p className="text-xs text-gray-600">Usuário</p>
             <p className="text-sm font-semibold text-gray-900">{user?.name || 'Demo User'}</p>
@@ -93,34 +114,5 @@ export default function ProtectedLayout({
         </div>
       </main>
     </div>
-  )
-}
-
-function NavLink({ href, label }: { href: string; label: string }) {
-  const router = useRouter()
-  const [isActive, setIsActive] = useState(false)
-
-  useEffect(() => {
-    // Verificar se a rota atual é a ativa
-    if (typeof window !== 'undefined') {
-      setIsActive(window.location.pathname === href)
-    }
-  }, [href])
-
-  return (
-    <a
-      href={href}
-      onClick={(e) => {
-        e.preventDefault()
-        router.push(href)
-      }}
-      className={`block px-4 py-2 rounded-lg transition ${
-        isActive
-          ? 'bg-blue-100 text-blue-700 font-semibold'
-          : 'text-gray-700 hover:bg-gray-100'
-      }`}
-    >
-      {label}
-    </a>
   )
 }
