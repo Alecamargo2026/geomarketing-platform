@@ -46,7 +46,10 @@ export default function ProtectedLayout({
           <a href="/customers" className="block px-4 py-2 rounded-lg hover:bg-gray-100 text-gray-700">
             Clientes
           </a>
-          <a href="/zones" className="block px-4 py-2 rounded-lg hover:bg-gray-100 text-gray-700">
+          <a href="/demographics" className="block px-4 py-2 rounded-lg hover:bg-gray-100 text-gray-700">
+            Análise Demográfica
+          </a>
+          <a href="/white-zones" className="block px-4 py-2 rounded-lg hover:bg-gray-100 text-gray-700">
             Zonas Brancas
           </a>
           <a href="/priorities" className="block px-4 py-2 rounded-lg hover:bg-gray-100 text-gray-700">
