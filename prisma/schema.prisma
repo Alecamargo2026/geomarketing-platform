@@ -27,6 +27,11 @@ model Tenant {
   customers Customer[]
   sales     Sale[]
   brands    Brand[]
+  geoNeighborhoods GeoNeighborhood[] @relation("TenantGeoNeighborhoods")
+  customerLocations CustomerLocation[] @relation("TenantCustomerLocations")
+  geoMetadata GeoMetadata[] @relation("TenantGeoMetadata")
+  geoCompetitors GeoCompetitor[] @relation("TenantGeoCompetitors")
+  geoSyncLogs GeoSyncLog[] @relation("TenantGeoSyncLogs")
 
   @@map("tenants")
 }
@@ -101,6 +106,7 @@ model Customer {
   brandId  String
   brand    Brand @relation(fields: [brandId], references: [id], onDelete: Cascade)
   sales    Sale[]
+  customerLocations CustomerLocation[]
 
   @@unique([tenantId, cnpj, brandId])
   @@index([tenantId])
@@ -133,4 +139,193 @@ model Sale {
   @@index([brandId])
   @@index([dataEmissao])
   @@map("sales")
+}
+
+// GeoNeighborhood (Bairros com Metadados)
+model GeoNeighborhood {
+  id                        String   @id @default(cuid())
+  tenantId                  String
+  tenant                    Tenant   @relation("TenantGeoNeighborhoods", fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  // Identificação
+  name                      String
+  cityName                  String?
+  state                     String
+  
+  // Demográficos (IBGE)
+  population                Int?
+  populationDensity         Float?
+  urbanizationRate          Float?
+  ageDistribution           Json?
+  
+  // Econômicos
+  gdpTotal                  Float?
+  gdpPerCapita              Float?
+  incomePerCapita           Float?
+  purchasingPower           Float?
+  unemploymentRate          Float?
+  
+  // Comercial
+  commercialEstablishments  Int?
+  commercialDensity         Float?
+  saturationIndex           Float?
+  
+  // Concorrentes
+  competitorCount           Int     @default(0)
+  competitorData            Json?
+  
+  // Infraestrutura
+  infrastructure            Json?
+  
+  // Vendas e Cobertura
+  totalClients              Int     @default(0)
+  totalRevenue              Float   @default(0)
+  coveragePercentage        Float   @default(0)
+  potentialMarket           Float   @default(0)
+  uncoveredPotential        Float   @default(0)
+  
+  // Metadados
+  dataSource                String?
+  lastUpdated               DateTime?
+  confidenceScore           Float?
+  
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+  
+  // Relations
+  customerLocations         CustomerLocation[]
+  geoCompetitors            GeoCompetitor[]
+  geoMetadata               GeoMetadata[]
+  
+  @@unique([tenantId, name, cityName, state])
+  @@index([tenantId])
+  @@index([state])
+  @@index([cityName])
+  @@index([coveragePercentage])
+  @@index([potentialMarket])
+  @@map("geo_neighborhoods")
+}
+
+// CustomerLocation (Clientes com Geolocalização)
+model CustomerLocation {
+  id                    String   @id @default(cuid())
+  tenantId              String
+  tenant                Tenant   @relation("TenantCustomerLocations", fields: [tenantId], references: [id], onDelete: Cascade)
+  customerId            String
+  customer              Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  neighborhoodId        String?
+  neighborhood          GeoNeighborhood? @relation(fields: [neighborhoodId], references: [id], onDelete: SetNull)
+  
+  // Localização
+  latitude              Float?
+  longitude             Float?
+  address               String?
+  
+  // Dados Comerciais
+  revenueTotal          Float   @default(0)
+  revenueYtd            Float   @default(0)
+  lastPurchaseDate      DateTime?
+  purchaseFrequency     String?
+  
+  // Metadados
+  visitCount            Int     @default(0)
+  daysSinceVisit        Int?
+  priorityScore         Float   @default(0)
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@index([tenantId])
+  @@index([customerId])
+  @@index([neighborhoodId])
+  @@index([priorityScore])
+  @@map("customer_locations")
+}
+
+// GeoMetadata (Metadados Estruturados)
+model GeoMetadata {
+  id                    String   @id @default(cuid())
+  tenantId              String
+  tenant                Tenant   @relation("TenantGeoMetadata", fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  // Entidade
+  entityType            String
+  entityId              String
+  
+  // Metadados
+  metadata              Json?
+  
+  // Rastreamento
+  source                String?
+  confidenceScore       Float?
+  lastVerified          DateTime?
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@index([tenantId])
+  @@index([entityType, entityId])
+  @@index([source])
+  @@map("geo_metadata")
+}
+
+// GeoCompetitor (Dados de Concorrentes)
+model GeoCompetitor {
+  id                    String   @id @default(cuid())
+  tenantId              String
+  tenant                Tenant   @relation("TenantGeoCompetitors", fields: [tenantId], references: [id], onDelete: Cascade)
+  neighborhoodId        String
+  neighborhood          GeoNeighborhood @relation(fields: [neighborhoodId], references: [id], onDelete: Cascade)
+  
+  // Identificação
+  name                  String
+  cnpj                  String?
+  type                  String?
+  
+  // Localização
+  latitude              Float?
+  longitude             Float?
+  address               String?
+  
+  // Dados
+  distanceKm            Float?
+  rating                Float?
+  marketShare           Float?
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@index([tenantId])
+  @@index([neighborhoodId])
+  @@map("geo_competitors")
+}
+
+// GeoSyncLog (Log de Sincronizações)
+model GeoSyncLog {
+  id                    String   @id @default(cuid())
+  tenantId              String
+  tenant                Tenant   @relation("TenantGeoSyncLogs", fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  // Sincronização
+  syncType              String
+  status                String
+  
+  // Dados
+  recordsProcessed      Int     @default(0)
+  recordsUpdated        Int     @default(0)
+  recordsFailed         Int     @default(0)
+  errorMessage          String?
+  
+  // Timing
+  startedAt             DateTime?
+  completedAt           DateTime?
+  durationSeconds       Int?
+  
+  createdAt             DateTime @default(now())
+  
+  @@index([tenantId])
+  @@index([syncType])
+  @@index([status])
+  @@index([createdAt])
+  @@map("geo_sync_logs")
 }
