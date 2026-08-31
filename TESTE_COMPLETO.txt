@@ -1,0 +1,107 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║              🧪 GUIA DE TESTE COMPLETO - GEOMARKETING PLATFORM 🧪         ║
+║                                                                            ║
+║                    Verifique se TUDO funciona 100%                        ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 PASSO 1: ATUALIZE A PÁGINA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Pressione F5 ou Ctrl+R para atualizar a página
+
+URL: https://geomarketing-platform.vercel.app
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 PASSO 2: TESTE CADA ABA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Clique em cada aba e verifique se abre corretamente:
+
+[ ] 1. Dashboard
+    └─ Deve mostrar: KPIs, Faturamento, Clientes, Cobertura, Potencial
+    └─ Deve ter: Ações Rápidas, Informações da Conta
+
+[ ] 2. Importar Dados
+    └─ Deve mostrar: Área de upload de arquivos
+    └─ Deve ter: Suporte para Excel e CSV
+
+[ ] 3. Clientes
+    └─ Deve mostrar: Tabela com clientes
+    └─ Colunas: Nome, CNPJ, Cidade, Faturamento, Status
+
+[ ] 4. Análise Demográfica
+    └─ Deve mostrar: KPIs de população e potencial
+    └─ Deve ter: Filtros por estado e potencial
+    └─ Deve ter: Tabela com cidades
+
+[ ] 5. Zonas Brancas
+    └─ Deve mostrar: Zonas Brancas Críticas e Potencial
+    └─ Deve ter: Cards com números
+
+[ ] 6. Prioridades
+    └─ Deve mostrar: Prioridades A, B, C, D
+    └─ Deve ter: Cards com números de clientes
+
+[ ] 7. Configurações
+    └─ Deve mostrar: Formulário de configurações
+    └─ Deve ter: Campos de empresa e email
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔐 PASSO 3: TESTE LOGOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] Clique em "Sair" (botão vermelho na sidebar)
+    └─ Deve redirecionar para /login
+    └─ Deve limpar a sessão
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔑 PASSO 4: TESTE LOGIN NOVAMENTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Email: demo@example.com
+Senha: demo123456
+
+[ ] Faça login novamente
+    └─ Deve redirecionar para /dashboard
+    └─ Deve mostrar o nome do usuário
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ CHECKLIST FINAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] Todas as 7 abas abrem corretamente
+[ ] Nenhuma aba sai ou redireciona para erro
+[ ] Logout funciona
+[ ] Login funciona
+[ ] Sidebar está visível em todas as páginas
+[ ] Header está visível em todas as páginas
+[ ] Conteúdo é exibido corretamente em cada página
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 RESULTADO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Se TODOS os itens estão marcados ✅:
+    → SISTEMA FUNCIONANDO 100% ✅
+
+Se algum item está ❌:
+    → Envie screenshot do erro para correção
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📞 SUPORTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Se encontrar algum problema:
+1. Atualize a página (F5)
+2. Limpe o cache (Ctrl+Shift+Delete)
+3. Tente novamente
+4. Se persistir, envie screenshot do erro
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║                    Boa sorte! Você consegue! 💪                           ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
