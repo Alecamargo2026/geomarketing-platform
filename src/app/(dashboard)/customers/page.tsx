@@ -1,10 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useAuthStore } from '@/store/authStore'
 
 export default function CustomersPage() {
-  const { user } = useAuthStore()
   const [customers] = useState([
     {
       id: 1,
