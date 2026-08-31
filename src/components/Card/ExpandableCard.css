@@ -1,0 +1,237 @@
+.expandable-card {
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.expandable-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.expandable-card--expanded {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.expandable-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--transition-normal);
+}
+
+.expandable-card__header:hover {
+  background: var(--color-bg-light);
+}
+
+.expandable-card__title-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.expandable-card__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 0.25rem 0;
+}
+
+.expandable-card__subtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.expandable-card__toggle {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  transition: all var(--transition-normal);
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.expandable-card__toggle:hover {
+  color: var(--color-primary);
+}
+
+.expandable-card__summary {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.expandable-card__content {
+  padding: 1.5rem;
+  border-top: 1px solid var(--color-border);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.expandable-card__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.expandable-card__loading p {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.expandable-card__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--color-danger-light);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.expandable-card__error-message {
+  color: var(--color-danger);
+  font-size: 0.875rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+.expandable-card__details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.expandable-card__children {
+  margin-bottom: 1.5rem;
+}
+
+.expandable-card__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.expandable-card__actions button {
+  flex: 1;
+  min-width: 120px;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .expandable-card {
+    background: var(--color-bg-dark);
+    border-color: var(--color-border);
+  }
+
+  .expandable-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .expandable-card--expanded {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .expandable-card__header:hover {
+    background: var(--color-bg-dark);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .expandable-card__header {
+    padding: 1rem;
+  }
+
+  .expandable-card__summary {
+    padding: 0 1rem 1rem 1rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .expandable-card__content {
+    padding: 1rem;
+  }
+
+  .expandable-card__actions {
+    flex-direction: column;
+  }
+
+  .expandable-card__actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .expandable-card__header {
+    padding: 0.75rem;
+  }
+
+  .expandable-card__title {
+    font-size: 1rem;
+  }
+
+  .expandable-card__summary {
+    padding: 0 0.75rem 0.75rem 0.75rem;
+    grid-template-columns: 1fr;
+  }
+
+  .expandable-card__content {
+    padding: 0.75rem;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .expandable-card,
+  .expandable-card__header,
+  .expandable-card__toggle,
+  .expandable-card__content {
+    transition: none;
+    animation: none;
+  }
+}

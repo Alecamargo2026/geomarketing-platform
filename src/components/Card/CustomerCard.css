@@ -1,0 +1,103 @@
+.customer-card__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: center;
+}
+
+.customer-card__stat-label {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.customer-card__stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.customer-card__stat--danger .customer-card__stat-value {
+  color: var(--color-danger);
+}
+
+.customer-card__stat--warning .customer-card__stat-value {
+  color: var(--color-warning);
+}
+
+.customer-card__stat--info .customer-card__stat-value {
+  color: var(--color-info);
+}
+
+.customer-card__stat--success .customer-card__stat-value {
+  color: var(--color-success);
+}
+
+.customer-card__details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.customer-card__detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--color-bg-light);
+  border-radius: var(--radius-md);
+}
+
+.customer-card__detail-label {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.customer-card__detail-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.customer-card__detail-value--danger {
+  color: var(--color-danger);
+}
+
+.customer-card__detail-value--warning {
+  color: var(--color-warning);
+}
+
+.customer-card__detail-value--info {
+  color: var(--color-info);
+}
+
+.customer-card__detail-value--success {
+  color: var(--color-success);
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .customer-card__detail-item {
+    background: var(--color-bg-dark);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .customer-card__details-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .customer-card__details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-card__detail-item {
+    padding: 0.75rem;
+  }
+}
