@@ -21,28 +21,39 @@ interface DemographicData {
 export default function DemographicsPage() {
   const [demographics, setDemographics] = useState<DemographicData[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const [selectedState, setSelectedState] = useState('')
   const [minPotential, setMinPotential] = useState(0)
 
   useEffect(() => {
     fetchDemographics()
-  }, [selectedState, minPotential])
+  }, [])
 
   const fetchDemographics = async () => {
     setLoading(true)
+    setError('')
     try {
       const params = new URLSearchParams()
       if (selectedState) params.append('state', selectedState)
       if (minPotential) params.append('minPotential', minPotential.toString())
 
       const response = await fetch(`/api/demographics?${params}`)
+      if (!response.ok) {
+        throw new Error('Erro ao buscar dados')
+      }
       const result = await response.json()
       setDemographics(result.data || [])
-    } catch (error) {
-      console.error('Erro ao buscar dados:', error)
+    } catch (err) {
+      console.error('Erro:', err)
+      setError('Erro ao carregar dados demográficos')
+      setDemographics([])
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleFilter = () => {
+    fetchDemographics()
   }
 
   const totalPopulation = demographics.reduce((sum, d) => sum + d.population, 0)
@@ -82,7 +93,7 @@ export default function DemographicsPage() {
       {/* Filtros */}
       <div className="bg-white rounded-lg shadow p-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Filtros</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-900 mb-2">Estado</label>
             <select
@@ -100,7 +111,7 @@ export default function DemographicsPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">Potencial Mínimo</label>
+            <label className="block text-sm font-medium text-gray-900 mb-2">Potencial Mínimo: {minPotential}</label>
             <input
               type="range"
               min="0"
@@ -109,7 +120,15 @@ export default function DemographicsPage() {
               onChange={(e) => setMinPotential(parseInt(e.target.value))}
               className="w-full"
             />
-            <span className="text-sm text-gray-600">{minPotential}</span>
+          </div>
+
+          <div className="flex items-end">
+            <button
+              onClick={handleFilter}
+              className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Filtrar
+            </button>
           </div>
         </div>
       </div>
@@ -120,8 +139,16 @@ export default function DemographicsPage() {
           <h2 className="text-lg font-semibold text-gray-900">Cidades por Potencial</h2>
         </div>
 
+        {error && (
+          <div className="p-6 text-center text-red-600">
+            {error}
+          </div>
+        )}
+
         {loading ? (
           <div className="p-6 text-center text-gray-600">Carregando dados...</div>
+        ) : demographics.length === 0 ? (
+          <div className="p-6 text-center text-gray-600">Nenhuma cidade encontrada</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">

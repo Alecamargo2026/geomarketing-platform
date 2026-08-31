@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ibgeService } from '@/services/ibgeService'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams
+    const { searchParams } = new URL(request.url)
     const state = searchParams.get('state')
     const minPotential = searchParams.get('minPotential')
     const maxPotential = searchParams.get('maxPotential')
