@@ -43,6 +43,7 @@ export default function ProtectedLayout({
 
   const navItems = [
     { href: '/dashboard', label: '📊 Dashboard' },
+    { href: '/map', label: '🗺️ Mapa Interativo' },
     { href: '/import', label: '📥 Importar Dados' },
     { href: '/customers', label: '👥 Clientes' },
     { href: '/demographics', label: '📈 Análise Demográfica' },

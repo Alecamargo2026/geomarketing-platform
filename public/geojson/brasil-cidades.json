@@ -1,0 +1,205 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rio de Janeiro",
+        "state": "RJ",
+        "code": 3304557
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-43.5, -22.5],
+            [-43.0, -22.5],
+            [-43.0, -23.0],
+            [-43.5, -23.0],
+            [-43.5, -22.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Niterói",
+        "state": "RJ",
+        "code": 3303302
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-43.1, -22.8],
+            [-42.8, -22.8],
+            [-42.8, -23.1],
+            [-43.1, -23.1],
+            [-43.1, -22.8]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Duque de Caxias",
+        "state": "RJ",
+        "code": 3301702
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-43.3, -22.7],
+            [-43.0, -22.7],
+            [-43.0, -23.0],
+            [-43.3, -23.0],
+            [-43.3, -22.7]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "São Gonçalo",
+        "state": "RJ",
+        "code": 3305802
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-43.0, -22.8],
+            [-42.7, -22.8],
+            [-42.7, -23.1],
+            [-43.0, -23.1],
+            [-43.0, -22.8]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Campos dos Goytacazes",
+        "state": "RJ",
+        "code": 3301009
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-41.3, -21.7],
+            [-41.0, -21.7],
+            [-41.0, -22.0],
+            [-41.3, -22.0],
+            [-41.3, -21.7]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Volta Redonda",
+        "state": "RJ",
+        "code": 3306109
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-44.1, -24.5],
+            [-43.8, -24.5],
+            [-43.8, -24.8],
+            [-44.1, -24.8],
+            [-44.1, -24.5]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Petrópolis",
+        "state": "RJ",
+        "code": 3303704
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-43.2, -25.2],
+            [-42.9, -25.2],
+            [-42.9, -25.5],
+            [-43.2, -25.5],
+            [-43.2, -25.2]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Teresópolis",
+        "state": "RJ",
+        "code": 3305901
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-43.0, -25.9],
+            [-42.7, -25.9],
+            [-42.7, -26.2],
+            [-43.0, -26.2],
+            [-43.0, -25.9]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Nova Iguaçu",
+        "state": "RJ",
+        "code": 3303500
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-43.5, -22.7],
+            [-43.2, -22.7],
+            [-43.2, -23.0],
+            [-43.5, -23.0],
+            [-43.5, -22.7]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Macaé",
+        "state": "RJ",
+        "code": 3302502
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-41.8, -22.3],
+            [-41.5, -22.3],
+            [-41.5, -22.6],
+            [-41.8, -22.6],
+            [-41.8, -22.3]
+          ]
+        ]
+      }
+    }
+  ]
+}
