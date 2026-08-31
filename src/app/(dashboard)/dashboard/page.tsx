@@ -54,7 +54,7 @@ export default function DashboardPage() {
               👥 Gerenciar Clientes
             </a>
             <a
-              href="/zones"
+              href="/white-zones"
               className="block px-4 py-3 bg-yellow-50 text-yellow-600 rounded-lg hover:bg-yellow-100 font-medium transition"
             >
               🗺️ Zonas Brancas
