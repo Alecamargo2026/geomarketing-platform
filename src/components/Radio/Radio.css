@@ -1,0 +1,102 @@
+/* ============================================================================
+   RADIO STYLES - PROFESSIONAL GEOMARKETING DASHBOARD
+   ============================================================================ */
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.radio__wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.radio__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  cursor: pointer;
+}
+
+.radio__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  user-select: none;
+}
+
+.radio__circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #cbd5e1;
+  border-radius: 50%;
+  background-color: var(--color-bg-white);
+  transition: all var(--transition-normal);
+  flex-shrink: 0;
+}
+
+.radio__input:checked + .radio__label .radio__circle {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.radio__input:checked + .radio__label .radio__circle::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.radio__input:focus + .radio__label .radio__circle {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.radio__input:disabled + .radio__label {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.radio__error {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-danger);
+  font-weight: 500;
+}
+
+.radio__hint {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+/* ============================================================================
+   DARK MODE
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .radio__label {
+    color: #f1f5f9;
+  }
+
+  .radio__circle {
+    border-color: #475569;
+    background-color: #1e293b;
+  }
+
+  .radio__input:checked + .radio__label .radio__circle {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+}

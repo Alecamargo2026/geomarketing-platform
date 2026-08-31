@@ -1,0 +1,130 @@
+/* ============================================================================
+   SWITCH STYLES - PROFESSIONAL GEOMARKETING DASHBOARD
+   ============================================================================ */
+
+.switch-group {
+  display: flex;
+  align-items: center;
+}
+
+.switch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.switch__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  cursor: pointer;
+}
+
+.switch__slider {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  background-color: #cbd5e1;
+  border-radius: 12px;
+  transition: background-color var(--transition-normal);
+}
+
+.switch__slider::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 2px;
+  top: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: left var(--transition-normal);
+}
+
+.switch__input:checked + .switch__slider {
+  background-color: var(--color-primary);
+}
+
+.switch__input:checked + .switch__slider::after {
+  left: 22px;
+}
+
+.switch__input:focus + .switch__slider {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.switch__input:disabled + .switch__slider {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.switch__label {
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+
+/* ============================================================================
+   SWITCH SIZES
+   ============================================================================ */
+
+.switch--sm .switch__slider {
+  width: 36px;
+  height: 20px;
+}
+
+.switch--sm .switch__slider::after {
+  width: 16px;
+  height: 16px;
+}
+
+.switch--sm .switch__input:checked + .switch__slider::after {
+  left: 18px;
+}
+
+.switch--lg .switch__slider {
+  width: 52px;
+  height: 28px;
+}
+
+.switch--lg .switch__slider::after {
+  width: 24px;
+  height: 24px;
+}
+
+.switch--lg .switch__input:checked + .switch__slider::after {
+  left: 26px;
+}
+
+/* ============================================================================
+   DARK MODE
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .switch__slider {
+    background-color: #475569;
+  }
+
+  .switch__slider::after {
+    background-color: #1e293b;
+  }
+
+  .switch__label {
+    color: #f1f5f9;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .switch__slider,
+  .switch__slider::after {
+    transition: none;
+  }
+}

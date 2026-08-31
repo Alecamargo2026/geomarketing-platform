@@ -1,0 +1,187 @@
+/* ============================================================================
+   TEXTAREA STYLES - PROFESSIONAL GEOMARKETING DASHBOARD
+   ============================================================================ */
+
+.textarea-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: auto;
+}
+
+.textarea-group--full-width {
+  width: 100%;
+}
+
+.textarea__label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.textarea__required {
+  color: var(--color-danger);
+  margin-left: 2px;
+}
+
+.textarea {
+  width: 100%;
+  padding: 10px 12px;
+  min-height: 100px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-white);
+  transition: all var(--transition-normal);
+  resize: vertical;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.textarea:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.textarea:hover:not(:disabled) {
+  border-color: #94a3b8;
+}
+
+.textarea:disabled {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-light);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.textarea--filled {
+  background-color: var(--color-bg-light);
+  border: 1px solid transparent;
+  border-bottom: 2px solid #cbd5e1;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.textarea--filled:focus {
+  border-bottom-color: var(--color-primary);
+  background-color: #f8fafc;
+}
+
+.textarea--outlined {
+  border: 2px solid #cbd5e1;
+}
+
+.textarea--outlined:focus {
+  border-color: var(--color-primary);
+}
+
+.textarea--sm {
+  min-height: 80px;
+  padding: 8px 10px;
+  font-size: 12px;
+}
+
+.textarea--md {
+  min-height: 100px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.textarea--lg {
+  min-height: 120px;
+  padding: 12px 16px;
+  font-size: 15px;
+}
+
+.textarea--error {
+  border-color: var(--color-danger);
+  background-color: #fef2f2;
+}
+
+.textarea--error:focus {
+  outline-color: var(--color-danger);
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.textarea__error {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-danger);
+  font-weight: 500;
+}
+
+.textarea__hint {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+/* ============================================================================
+   DARK MODE
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .textarea {
+    background-color: #1e293b;
+    border-color: #475569;
+    color: #f1f5f9;
+  }
+
+  .textarea:hover:not(:disabled) {
+    border-color: #64748b;
+  }
+
+  .textarea:disabled {
+    background-color: #0f172a;
+    color: #64748b;
+  }
+
+  .textarea--filled {
+    background-color: #0f172a;
+    border-bottom-color: #475569;
+  }
+
+  .textarea--filled:focus {
+    background-color: #1e293b;
+  }
+
+  .textarea--error {
+    border-color: var(--color-danger);
+    background-color: rgba(220, 38, 38, 0.1);
+  }
+
+  .textarea__error {
+    color: #fca5a5;
+  }
+
+  .textarea__hint {
+    color: #cbd5e1;
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+@media (max-width: 480px) {
+  .textarea {
+    font-size: 16px;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .textarea {
+    transition: none;
+  }
+}

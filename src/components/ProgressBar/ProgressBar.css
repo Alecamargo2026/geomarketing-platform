@@ -1,0 +1,101 @@
+/* ============================================================================
+   PROGRESSBAR STYLES - PROFESSIONAL GEOMARKETING DASHBOARD
+   ============================================================================ */
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.progress__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.progress__container {
+  width: 100%;
+  background-color: var(--color-bg-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.progress__bar {
+  height: 100%;
+  background-color: var(--color-primary);
+  transition: width var(--transition-normal);
+}
+
+.progress__bar--success {
+  background-color: var(--color-success);
+}
+
+.progress__bar--danger {
+  background-color: var(--color-danger);
+}
+
+.progress__bar--warning {
+  background-color: var(--color-warning);
+}
+
+.progress__bar--animated {
+  animation: progress-animation 1.5s ease-in-out infinite;
+}
+
+@keyframes progress-animation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ============================================================================
+   PROGRESS SIZES
+   ============================================================================ */
+
+.progress--sm .progress__container {
+  height: 4px;
+}
+
+.progress--md .progress__container {
+  height: 8px;
+}
+
+.progress--lg .progress__container {
+  height: 12px;
+}
+
+/* ============================================================================
+   DARK MODE
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .progress__container {
+    background-color: #334155;
+  }
+
+  .progress__label {
+    color: #94a3b8;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .progress__bar {
+    transition: none;
+  }
+
+  .progress__bar--animated {
+    animation: none;
+  }
+}

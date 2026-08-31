@@ -1,0 +1,140 @@
+/* ============================================================================
+   FILTER STYLES - PROFESSIONAL GEOMARKETING DASHBOARD
+   ============================================================================ */
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background-color: var(--color-bg-white);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+}
+
+.filter__content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filter__group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter__input,
+.filter__select {
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-family: inherit;
+  background-color: var(--color-bg-white);
+  color: var(--color-text-primary);
+  transition: all var(--transition-normal);
+}
+
+.filter__input:focus,
+.filter__select:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-color: var(--color-primary);
+}
+
+.filter__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.filter__button {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.filter__button--apply {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.filter__button--apply:hover {
+  background-color: #1d4ed8;
+}
+
+.filter__button--reset {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-primary);
+}
+
+.filter__button--reset:hover {
+  background-color: #e2e8f0;
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .filter {
+    padding: 12px;
+  }
+
+  .filter__actions {
+    flex-direction: column;
+  }
+}
+
+/* ============================================================================
+   DARK MODE
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .filter {
+    background-color: #1e293b;
+    border-color: #475569;
+  }
+
+  .filter__input,
+  .filter__select {
+    background-color: #0f172a;
+    border-color: #475569;
+    color: #f1f5f9;
+  }
+
+  .filter__button--reset {
+    background-color: #334155;
+    color: #f1f5f9;
+  }
+
+  .filter__button--reset:hover {
+    background-color: #475569;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .filter__input,
+  .filter__select,
+  .filter__button {
+    transition: none;
+  }
+}

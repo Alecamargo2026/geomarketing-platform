@@ -1,0 +1,170 @@
+/* ============================================================================
+   MENU STYLES - PROFESSIONAL GEOMARKETING DASHBOARD
+   ============================================================================ */
+
+.menu {
+  position: relative;
+  display: inline-block;
+}
+
+.menu__trigger {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.menu__trigger:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.menu__dropdown {
+  position: absolute;
+  z-index: 1000;
+  min-width: 200px;
+  background-color: var(--color-bg-white);
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  animation: slideDown 200ms ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================================
+   MENU POSITIONS
+   ============================================================================ */
+
+.menu--bottom .menu__dropdown {
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+}
+
+.menu--top .menu__dropdown {
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 8px;
+}
+
+.menu--left .menu__dropdown {
+  right: 100%;
+  top: 0;
+  margin-right: 8px;
+}
+
+.menu--right .menu__dropdown {
+  left: 100%;
+  top: 0;
+  margin-left: 8px;
+}
+
+/* ============================================================================
+   MENU ITEMS
+   ============================================================================ */
+
+.menu__item {
+  width: 100%;
+  padding: 10px 16px;
+  border: none;
+  background: none;
+  color: var(--color-text-primary);
+  text-align: left;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color var(--transition-normal);
+}
+
+.menu__item:hover:not(:disabled) {
+  background-color: var(--color-bg-light);
+}
+
+.menu__item:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+.menu__item--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.menu__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.menu__icon svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 2;
+}
+
+.menu__label {
+  flex: 1;
+}
+
+.menu__divider {
+  height: 1px;
+  background-color: #e2e8f0;
+  margin: 4px 0;
+}
+
+/* ============================================================================
+   DARK MODE
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .menu__dropdown {
+    background-color: #1e293b;
+    border-color: #475569;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .menu__item {
+    color: #f1f5f9;
+  }
+
+  .menu__item:hover:not(:disabled) {
+    background-color: #334155;
+  }
+
+  .menu__divider {
+    background-color: #475569;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .menu__dropdown {
+    animation: none;
+  }
+
+  .menu__item {
+    transition: none;
+  }
+}
