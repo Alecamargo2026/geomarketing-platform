@@ -1,0 +1,227 @@
+.route-flow {
+  width: 100%;
+  padding: 2rem;
+  background: var(--color-bg-light);
+  min-height: 100vh;
+}
+
+.route-flow__container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: var(--color-bg-white);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.route-flow__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.route-flow__header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.route-flow__selection,
+.route-flow__preview {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.route-flow__selection h2,
+.route-flow__preview h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.route-flow__clients {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.route-flow__client-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: var(--color-bg-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.route-flow__client-item:hover {
+  background: var(--color-primary-light);
+}
+
+.route-flow__client-item input {
+  cursor: pointer;
+}
+
+.route-flow__client-item span {
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+}
+
+.route-flow__loading,
+.route-flow__success,
+.route-flow__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.route-flow__loading p {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.route-flow__success-icon,
+.route-flow__error-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  animation: scaleIn 0.3s ease-out;
+}
+
+.route-flow__success-icon {
+  background: var(--color-success);
+}
+
+.route-flow__error-icon {
+  background: var(--color-danger);
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.route-flow__success h2,
+.route-flow__error h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.route-flow__success p {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.route-flow__route-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.route-flow__info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--color-bg-light);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.route-flow__info-item span:first-child {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.route-flow__info-item span:last-child {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .route-flow {
+    background: var(--color-bg-dark);
+  }
+
+  .route-flow__container {
+    background: var(--color-bg-dark);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .route-flow__client-item {
+    background: var(--color-bg-dark);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .route-flow {
+    padding: 1rem;
+  }
+
+  .route-flow__container {
+    padding: 1.5rem;
+  }
+
+  .route-flow__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .route-flow__route-info {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .route-flow__container {
+    padding: 1rem;
+  }
+
+  .route-flow__header h1 {
+    font-size: 1.25rem;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .route-flow__success-icon,
+  .route-flow__error-icon {
+    animation: none;
+  }
+
+  .route-flow__client-item {
+    transition: none;
+  }
+}

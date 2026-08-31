@@ -1,0 +1,245 @@
+.auth-flow {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.auth-flow__container {
+  width: 100%;
+  max-width: 400px;
+  background: var(--color-bg-white);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-flow__header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-flow__header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.auth-flow__header .badge {
+  display: inline-block;
+}
+
+.auth-flow__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.auth-flow__form input {
+  width: 100%;
+}
+
+.auth-flow__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.auth-flow__actions button {
+  width: 100%;
+}
+
+.auth-flow__divider {
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  margin: 1rem 0;
+  position: relative;
+}
+
+.auth-flow__divider::before,
+.auth-flow__divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 45%;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.auth-flow__divider::before {
+  left: 0;
+}
+
+.auth-flow__divider::after {
+  right: 0;
+}
+
+.auth-flow__loading,
+.auth-flow__success,
+.auth-flow__error,
+.auth-flow__biometry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.auth-flow__loading p,
+.auth-flow__biometry p {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+
+.auth-flow__success-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--color-success);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  animation: scaleIn 0.3s ease-out;
+}
+
+.auth-flow__error-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--color-danger);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.auth-flow__success h2,
+.auth-flow__error h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.auth-flow__success p {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.auth-flow__error button {
+  margin-top: 1rem;
+}
+
+.auth-flow__modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.auth-flow__modal-content p {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.auth-flow__modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.auth-flow__modal-actions button {
+  flex: 1;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .auth-flow {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  }
+
+  .auth-flow__container {
+    background: var(--color-bg-dark);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .auth-flow__header h1 {
+    color: var(--color-text-primary);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .auth-flow__container {
+    max-width: 100%;
+    padding: 1.5rem;
+  }
+
+  .auth-flow__header h1 {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-flow {
+    padding: 0.5rem;
+  }
+
+  .auth-flow__container {
+    padding: 1rem;
+  }
+
+  .auth-flow__header h1 {
+    font-size: 1rem;
+  }
+
+  .auth-flow__form {
+    gap: 1rem;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .auth-flow__container,
+  .auth-flow__success-icon,
+  .auth-flow__error-icon {
+    animation: none;
+  }
+}
