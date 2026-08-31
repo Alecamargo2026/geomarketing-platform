@@ -1,0 +1,182 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║         🗺️ MAPA DINÂMICO COM DADOS REAIS - GUIA DE TESTE 🗺️              ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+## 🎯 O QUE FOI IMPLEMENTADO
+
+✅ **Importação de Excel**
+   - API `/api/import` que recebe arquivo Excel
+   - Parseia dados de clientes (CNPJ, Razão Social, Bairro, Faturamento)
+   - Normaliza bairros (remove acentos, duplicatas)
+   - Geocodifica automaticamente (coordenadas lat/long)
+   - Armazena em PostgreSQL (customers + sales)
+
+✅ **API de Dados do Mapa**
+   - Endpoint `/api/map/data` que retorna dados agregados por bairro
+   - Calcula: clientes, faturamento, cobertura, potencial
+   - Filtra por estado, cidade, período
+   - Retorna lista de clientes por bairro
+
+✅ **Página de Importação**
+   - Interface para upload de Excel
+   - Mostra resultado: clientes importados, bairros, faturamento
+   - Exibe erros (se houver)
+
+✅ **Mapa Interativo (em desenvolvimento)**
+   - Carrega dados reais da API
+   - Mostra marcadores por bairro
+   - Clique em bairro → detalhes de clientes
+
+---
+
+## 📋 PASSO A PASSO DE TESTE
+
+### 1️⃣ ACESSAR A PLATAFORMA
+
+URL: https://geomarketing-platform.vercel.app
+Login: demo@example.com / demo123456
+
+### 2️⃣ IMPORTAR ARQUIVO EXCEL
+
+1. Clique em "📥 Importar Dados" no menu lateral
+2. Selecione o arquivo: `ANALISE RJ (1).xlsx`
+3. Clique em "Importar Arquivo"
+4. Aguarde a importação (pode levar alguns segundos)
+
+**Resultado esperado:**
+- ✅ Clientes Importados: 120+
+- ✅ Bairros: ~20
+- ✅ Faturamento Total: R$ 2.5M+
+- ✅ Lista de bairros importados
+
+### 3️⃣ VISUALIZAR MAPA DINÂMICO
+
+1. Clique em "🗺️ Mapa Interativo" no menu lateral
+2. Veja o mapa do Brasil com estados coloridos (heatmap)
+3. Clique em um estado (ex: Rio de Janeiro)
+4. Zoom para cidades
+5. Clique em uma cidade para ver bairros
+6. Clique em um bairro para ver detalhes
+
+**Dados que devem aparecer:**
+- Nome do bairro
+- Número de clientes
+- Faturamento total
+- Cobertura (%)
+- Potencial de mercado
+- Lista de clientes com CNPJ, Razão Social, Faturamento
+
+### 4️⃣ TESTAR FILTROS
+
+Na página do mapa:
+- Filtro "Visualizar por": Cobertura, Potencial, Clientes, Faturamento
+- Filtro "Região": Sudeste, Nordeste, Sul, etc.
+- Filtro "Potencial": Muito Alto, Alto, Médio, Baixo
+- Botão "Gerar Relatório"
+
+---
+
+## 🔧 DADOS TÉCNICOS
+
+### Estrutura do Excel Esperado
+
+```
+Coluna A: CNPJ/CPF
+Coluna B: Razão Social
+Coluna C: Nome Fantasia
+Coluna D: Telefone
+Coluna E: Bairro
+Coluna F: CEP
+Colunas G+: Faturamento por mês (datas como 2025-09-01, 2026-01-01)
+```
+
+### Bairros Importados (RJ)
+
+Gardenia Azul, Jacarepaguá, Leblon, Barra da Tijuca, Anil, Catete, Centro,
+Copacabana, Ipanema, Botafogo, Flamengo, Gloria, Lapa, Santa Teresa, Tijuca,
+Vila Isabel, Maracanã, São Cristóvão, Penha, Irajá, Campo Grande, Santa Cruz,
+Bangu, Realengo, Padre Miguel, Inhaúma, Meier, Ramos, Olaria, Piedade,
+Engenho Novo, Engenho de Dentro, Encantado, Cachambi, Higienópolis,
+Todos os Santos, Andaraí, Grajaú, Saúde, Madureira, Oswaldo Cruz, Bonsucesso,
+Cidade Nova, Santo Cristo, Vila da Penha
+
+### APIs Criadas
+
+```
+POST /api/import
+- Recebe: file (Excel), brandId, tenantId
+- Retorna: { imported, total, neighborhoods, totalRevenue, errors }
+
+GET /api/map/data?tenantId=xxx&state=RJ&city=Rio%20de%20Janeiro&period=2026-01
+- Retorna: { neighborhoods: [...], summary: {...} }
+```
+
+---
+
+## ⚠️ LIMITAÇÕES CONHECIDAS
+
+1. **Dados Mock no Mapa**
+   - Potencial calculado como 1.5x do faturamento (simulado)
+   - Concorrentes: número aleatório (simulado)
+   - Densidade comercial: calculada como clientes/5
+
+2. **Geocodificação**
+   - Usa fallback de coordenadas aproximadas para bairros do RJ
+   - Nominatim API pode ter rate limit (1 req/s)
+
+3. **Banco de Dados**
+   - Dados armazenados em Supabase PostgreSQL
+   - Sem persistência entre deploys (dados de teste)
+
+4. **Performance**
+   - Primeira importação pode levar 30-60s (geocodificação)
+   - Importações subsequentes são mais rápidas (cache)
+
+---
+
+## 🚀 PRÓXIMAS MELHORIAS
+
+- [ ] Integrar dados reais de IBGE (população, PIB)
+- [ ] Roteirização inteligente (otimizar rotas de vendedores)
+- [ ] Análise de concorrência (mapear concorrentes)
+- [ ] Sincronização em tempo real (Supabase Realtime)
+- [ ] Mapas 3D (Deck.gl)
+- [ ] Recomendações automáticas (IA)
+- [ ] Exportar relatórios (PDF, Excel)
+
+---
+
+## 📞 SUPORTE
+
+Se encontrar erros:
+
+1. Verifique o console do navegador (F12 → Console)
+2. Verifique os logs do Vercel (https://vercel.com/dashboard)
+3. Teste a API diretamente:
+   ```
+   curl https://geomarketing-platform.vercel.app/api/map/data?tenantId=demo-tenant-id&state=RJ
+   ```
+
+---
+
+## ✅ CHECKLIST DE TESTE
+
+- [ ] Login funciona
+- [ ] Página de Importação carrega
+- [ ] Upload de Excel funciona
+- [ ] Dados importados aparecem
+- [ ] Mapa carrega
+- [ ] Clique em estado → zoom funciona
+- [ ] Clique em cidade → mostra bairros
+- [ ] Clique em bairro → mostra detalhes
+- [ ] Painel lateral mostra clientes reais
+- [ ] Faturamento total está correto
+- [ ] Filtros funcionam
+- [ ] Sem erros no console
+
+---
+
+Última atualização: 31/08/2026
+Status: ✅ PRONTO PARA TESTE
