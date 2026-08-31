@@ -1,0 +1,136 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Tenant (Empresa/Organização)
+model Tenant {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  email     String   @unique
+  phone     String?
+  website   String?
+  logo      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  users     User[]
+  customers Customer[]
+  sales     Sale[]
+  brands    Brand[]
+
+  @@map("tenants")
+}
+
+// User (Usuário da Plataforma)
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("user") // admin, manager, user
+  avatar    String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@map("users")
+}
+
+// Brand (Marca/Produto)
+model Brand {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String
+  color     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  customers Customer[]
+  sales    Sale[]
+
+  @@unique([tenantId, slug])
+  @@index([tenantId])
+  @@map("brands")
+}
+
+// Customer (Cliente)
+model Customer {
+  id            String   @id @default(cuid())
+  cnpj          String
+  razaoSocial   String
+  nomeFantasia  String?
+  telefone      String?
+  email         String?
+  endereco      String?
+  numero        String?
+  complemento   String?
+  bairro        String?
+  cep           String?
+  cidade        String
+  estado        String
+  latitude      Float?
+  longitude     Float?
+  representante String?
+  segmento      String?
+  canal         String?
+  status        String   @default("ativo") // ativo, inativo, prospecto
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  brandId  String
+  brand    Brand @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  sales    Sale[]
+
+  @@unique([tenantId, cnpj, brandId])
+  @@index([tenantId])
+  @@index([brandId])
+  @@index([cidade])
+  @@index([estado])
+  @@map("customers")
+}
+
+// Sale (Venda/Transação)
+model Sale {
+  id            String   @id @default(cuid())
+  dataEmissao   DateTime
+  valorTotal    Float
+  quantidade    Int?
+  representante String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  tenantId   String
+  tenant     Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  brandId    String
+  brand      Brand @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@index([customerId])
+  @@index([brandId])
+  @@index([dataEmissao])
+  @@map("sales")
+}
