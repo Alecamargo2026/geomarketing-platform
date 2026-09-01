@@ -1,6 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import * as XLSX from 'xlsx';
+import { parseExcelFile } from '@/services/excelParser';
+import { CustomerImportSchema, PriorityImportSchema, SaleImportSchema } from '@/lib/validators/importSchema';
+import { ZodError } from 'zod';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,15 +35,18 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const file = formData.get('file') as File;
+    const brandId = formData.get('brandId') as string;
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
-    const buffer = await file.arrayBuffer();
-    const workbook = XLSX.read(buffer, { type: 'array' });
-    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const data = XLSX.utils.sheet_to_json(worksheet);
+    if (!brandId) {
+      return NextResponse.json({ error: 'Brand ID is required' }, { status: 400 });
+    }
+
+    // Parse Excel file
+    const parsedData = await parseExcelFile(file);
 
     // Create import log
     const { data: importLog, error: logError } = await supabase
@@ -48,6 +54,7 @@ export async function POST(request: NextRequest) {
       .insert([
         {
           user_id: user.id,
+          brand_id: brandId,
           filename: file.name,
           status: 'processing',
           imported_count: 0,
@@ -65,53 +72,150 @@ export async function POST(request: NextRequest) {
     let errorCount = 0;
     const errors: string[] = [];
 
-    // Process each row
-    for (const row of data) {
+    // Process analysis data (customers)
+    for (let i = 0; i < parsedData.analysisData.length; i++) {
       try {
-        const rowData = row as Record<string, any>;
+        const row = parsedData.analysisData[i];
         
-        // Get city
-        const { data: cities } = await supabase
-          .from('cities')
+        // Validate
+        const validated = CustomerImportSchema.parse(row);
+
+        // Check for duplicate
+        const { data: existing } = await supabase
+          .from('customers')
           .select('id')
-          .eq('name', rowData.city)
-          .eq('state_code', rowData.state)
+          .eq('cnpj', validated.cnpj)
+          .eq('brand_id', brandId)
           .single();
 
-        if (!cities) {
-          errorCount++;
-          errors.push(`Row ${importedCount + 1}: City not found`);
-          continue;
+        if (existing) {
+          // Update existing
+          await supabase
+            .from('customers')
+            .update({
+              name: validated.razao_social,
+              email: validated.email,
+              phone: validated.telefone,
+              status: validated.status,
+            })
+            .eq('id', existing.id);
+        } else {
+          // Create new
+          await supabase
+            .from('customers')
+            .insert([
+              {
+                user_id: user.id,
+                brand_id: brandId,
+                cnpj: validated.cnpj,
+                name: validated.razao_social,
+                email: validated.email,
+                phone: validated.telefone,
+                city: validated.cidade,
+                state: validated.estado,
+                address: validated.endereco,
+                status: validated.status,
+              },
+            ]);
         }
 
-        // Insert customer
-        const { error: insertError } = await supabase
-          .from('customers')
-          .insert([
-            {
-              user_id: user.id,
-              name: rowData.name,
-              cnpj: rowData.cnpj,
-              email: rowData.email,
-              phone: rowData.phone,
-              city_id: cities.id,
-              state_code: rowData.state,
-              revenue: parseFloat(rowData.revenue) || 0,
-              status: rowData.status || 'prospect',
-              visit_frequency: rowData.visit_frequency,
-              notes: rowData.notes,
-            },
-          ]);
-
-        if (insertError) {
-          errorCount++;
-          errors.push(`Row ${importedCount + 1}: ${insertError.message}`);
+        importedCount++;
+      } catch (error) {
+        errorCount++;
+        if (error instanceof ZodError) {
+          errors.push(`Row ${i + 1}: ${error.errors.map(e => e.message).join(', ')}`);
         } else {
-          importedCount++;
+          errors.push(`Row ${i + 1}: ${String(error)}`);
+        }
+      }
+    }
+
+    // Process priority data
+    for (let i = 0; i < parsedData.priorityData.length; i++) {
+      try {
+        const row = parsedData.priorityData[i];
+        
+        // Validate
+        const validated = PriorityImportSchema.parse(row);
+
+        // Find customer
+        const { data: customer } = await supabase
+          .from('customers')
+          .select('id')
+          .eq('cnpj', validated.cnpj)
+          .eq('brand_id', brandId)
+          .single();
+
+        if (customer) {
+          // Update priority
+          await supabase
+            .from('customers')
+            .update({
+              priority_score: validated.priority_score,
+              last_visit: validated.last_visit,
+              next_visit: validated.next_visit,
+            })
+            .eq('id', customer.id);
         }
       } catch (error) {
         errorCount++;
-        errors.push(`Row ${importedCount + 1}: ${String(error)}`);
+        if (error instanceof ZodError) {
+          errors.push(`Priority Row ${i + 1}: ${error.errors.map(e => e.message).join(', ')}`);
+        }
+      }
+    }
+
+    // Process transaction data
+    for (let i = 0; i < parsedData.transactionData.length; i++) {
+      try {
+        const row = parsedData.transactionData[i];
+        
+        // Validate
+        const validated = SaleImportSchema.parse(row);
+
+        // Find customer
+        const { data: customer } = await supabase
+          .from('customers')
+          .select('id')
+          .eq('cnpj', validated.cnpj)
+          .eq('brand_id', brandId)
+          .single();
+
+        if (customer) {
+          // Create sale
+          await supabase
+            .from('sales')
+            .insert([
+              {
+                user_id: user.id,
+                brand_id: brandId,
+                customer_id: customer.id,
+                amount: validated.valor,
+                quantity: validated.quantidade,
+                product: validated.produto,
+                sale_date: validated.data_venda,
+                representante_id: validated.representante_id,
+              },
+            ]);
+
+          // Update customer revenue
+          const { data: sales } = await supabase
+            .from('sales')
+            .select('amount')
+            .eq('customer_id', customer.id);
+
+          const totalRevenue = (sales || []).reduce((sum, s) => sum + (s.amount || 0), 0);
+
+          await supabase
+            .from('customers')
+            .update({ revenue: totalRevenue })
+            .eq('id', customer.id);
+        }
+      } catch (error) {
+        errorCount++;
+        if (error instanceof ZodError) {
+          errors.push(`Transaction Row ${i + 1}: ${error.errors.map(e => e.message).join(', ')}`);
+        }
       }
     }
 
@@ -122,7 +226,7 @@ export async function POST(request: NextRequest) {
         status: 'completed',
         imported_count: importedCount,
         error_count: errorCount,
-        errors: errors.join('\n'),
+        errors: errors.slice(0, 100).join('\n'),
         completed_at: new Date().toISOString(),
       })
       .eq('id', importLog.id);
@@ -131,9 +235,11 @@ export async function POST(request: NextRequest) {
       success: true,
       imported_count: importedCount,
       error_count: errorCount,
-      errors,
+      errors: errors.slice(0, 10),
+      total_errors: errors.length,
     });
   } catch (error) {
+    console.error('Import error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
