@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
 
+export const dynamic = 'force-dynamic'
+
 // Simulando um banco de dados em memória para demo
 // Em produção, usar Supabase/PostgreSQL
 const users: any[] = [
