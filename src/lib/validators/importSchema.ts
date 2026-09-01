@@ -14,15 +14,11 @@ export const CustomerImportSchema = z.object({
   cnpj: z.string().regex(cnpjRegex, 'CNPJ inválido'),
   razao_social: z.string().min(3, 'Razão social obrigatória'),
   cidade: z.string().min(2, 'Cidade obrigatória'),
-  estado: z.enum(brazilianStates as [string, ...string[]], {
-    errorMap: () => ({ message: 'Estado inválido' })
-  }),
+  estado: z.enum(brazilianStates as [string, ...string[]]).catch('SP'),
   endereco: z.string().optional(),
   telefone: z.string().optional(),
   email: z.string().email('Email inválido').optional(),
-  status: z.enum(['ativo', 'inativo', 'prospect'], {
-    errorMap: () => ({ message: 'Status inválido' })
-  }).default('prospect'),
+  status: z.enum(['ativo', 'inativo', 'prospect']).default('prospect'),
 });
 
 export const PriorityImportSchema = z.object({

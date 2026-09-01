@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 interface BrandStore {
   selectedBrandId: string | null;
@@ -14,7 +14,7 @@ export const useBrandStore = create<BrandStore>()(
     }),
     {
       name: 'brand-store',
-      storage: typeof window !== 'undefined' ? localStorage : undefined,
+      storage: typeof window !== 'undefined' ? createJSONStorage(() => localStorage) : undefined,
     }
   )
 );

@@ -1,0 +1,22 @@
+
+> geomarketing-platform@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/app/api/import/upload/route.ts:125:46
+Type error: Property 'errors' does not exist on type 'ZodError<unknown>'.
+
+[0m [90m 123 |[39m         errorCount[33m++[39m[33m;[39m[0m
+[0m [90m 124 |[39m         [36mif[39m (error [36minstanceof[39m [33mZodError[39m) {[0m
+[0m[31m[1m>[22m[39m[90m 125 |[39m           errors[33m.[39mpush([32m`Row ${i + 1}: ${error.errors.map(e => e.message).join(', ')}`[39m)[33m;[39m[0m
+[0m [90m     |[39m                                              [31m[1m^[22m[39m[0m
+[0m [90m 126 |[39m         } [36melse[39m {[0m
+[0m [90m 127 |[39m           errors[33m.[39mpush([32m`Row ${i + 1}: ${String(error)}`[39m)[33m;[39m[0m
+[0m [90m 128 |[39m         }[0m
+Next.js build worker exited with code: 1 and signal: null

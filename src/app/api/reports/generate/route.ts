@@ -3,15 +3,16 @@ import { createClient } from '@supabase/supabase-js';
 import { generatePDFReport, ReportData } from '@/services/reportGenerator';
 import { generateExcelBuffer } from '@/services/excelExporter';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+
     const searchParams = request.nextUrl.searchParams;
-    const type = searchParams.get('type') || 'monthly';
     const brandId = searchParams.get('brand');
     const month = searchParams.get('month');
     const format = searchParams.get('format') || 'pdf';
@@ -86,7 +87,7 @@ export async function GET(request: NextRequest) {
 
     if (format === 'pdf') {
       const pdfBuffer = generatePDFReport(reportData);
-      return new NextResponse(pdfBuffer, {
+      return new NextResponse(pdfBuffer as any, {
         headers: {
           'Content-Type': 'application/pdf',
           'Content-Disposition': `attachment; filename="relatorio_${brandId}_${month}.pdf"`,
@@ -94,9 +95,27 @@ export async function GET(request: NextRequest) {
       });
     } else if (format === 'excel') {
       const excelBuffer = generateExcelBuffer({
-        customers: customers || [],
-        sales: sales || [],
-        gaps: gapAnalysis,
+        customers: (customers || []).map(c => ({
+          cnpj: c.cnpj || '',
+          razao_social: c.name || '',
+          cidade: '',
+          estado: '',
+          faturamento: c.revenue || 0,
+          status: c.status || '',
+        })),
+        sales: (sales || []).map(s => ({
+          cnpj: '',
+          data: s.created_at || '',
+          valor: s.amount || 0,
+          produto: s.product || '',
+        })),
+        gaps: (gapAnalysis || []).map(g => ({
+          cidade: g.city || '',
+          estado: g.state || '',
+          potencial: g.potential || 0,
+          faturamento: g.revenue || 0,
+          gap: g.gap || 0,
+        })),
         summary: {
           totalRevenue,
           coverage,
@@ -104,7 +123,7 @@ export async function GET(request: NextRequest) {
         },
       });
 
-      return new NextResponse(excelBuffer, {
+      return new NextResponse(excelBuffer as any, {
         headers: {
           'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           'Content-Disposition': `attachment; filename="relatorio_${brandId}_${month}.xlsx"`,

@@ -53,11 +53,6 @@ export function startReportSchedulerJob() {
             .select('name, revenue, status')
             .eq('brand_id', brand.id);
 
-          const { data: sales } = await supabase
-            .from('sales')
-            .select('amount, created_at, product')
-            .eq('brand_id', brand.id);
-
           // Calcular KPIs
           const totalRevenue = (customers || []).reduce((sum, c) => sum + (c.revenue || 0), 0);
           const coverage = customers ? (customers.length / 1000) * 100 : 0;

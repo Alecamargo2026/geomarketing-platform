@@ -1,6 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
-import * as XLSX from 'xlsx';
 import { parseExcelFile } from '@/services/excelParser';
 import { CustomerImportSchema, PriorityImportSchema, SaleImportSchema } from '@/lib/validators/importSchema';
 import { ZodError } from 'zod';
@@ -123,7 +122,7 @@ export async function POST(request: NextRequest) {
       } catch (error) {
         errorCount++;
         if (error instanceof ZodError) {
-          errors.push(`Row ${i + 1}: ${error.errors.map(e => e.message).join(', ')}`);
+          errors.push(`Row ${i + 1}: ${error.issues.map(e => e.message).join(', ')}`);
         } else {
           errors.push(`Row ${i + 1}: ${String(error)}`);
         }
@@ -160,7 +159,7 @@ export async function POST(request: NextRequest) {
       } catch (error) {
         errorCount++;
         if (error instanceof ZodError) {
-          errors.push(`Priority Row ${i + 1}: ${error.errors.map(e => e.message).join(', ')}`);
+          errors.push(`Priority Row ${i + 1}: ${error.issues.map(e => e.message).join(', ')}`);
         }
       }
     }
@@ -214,7 +213,7 @@ export async function POST(request: NextRequest) {
       } catch (error) {
         errorCount++;
         if (error instanceof ZodError) {
-          errors.push(`Transaction Row ${i + 1}: ${error.errors.map(e => e.message).join(', ')}`);
+          errors.push(`Transaction Row ${i + 1}: ${error.issues.map(e => e.message).join(', ')}`);
         }
       }
     }

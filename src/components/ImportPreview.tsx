@@ -25,7 +25,7 @@ export function ImportPreview({ data, onImport, onCancel }: ImportPreviewProps) 
         CustomerImportSchema.parse(row);
       } catch (error) {
         if (error instanceof ZodError) {
-          errors[`analysis_${idx}`] = error.errors.map(e => `${e.path.join('.')}: ${e.message}`);
+          errors[`analysis_${idx}`] = error.issues.map(e => `${e.path.join('.')}: ${e.message}`);
         }
       }
     });
@@ -36,7 +36,7 @@ export function ImportPreview({ data, onImport, onCancel }: ImportPreviewProps) 
         PriorityImportSchema.parse(row);
       } catch (error) {
         if (error instanceof ZodError) {
-          errors[`priority_${idx}`] = error.errors.map(e => `${e.path.join('.')}: ${e.message}`);
+          errors[`priority_${idx}`] = error.issues.map(e => `${e.path.join('.')}: ${e.message}`);
         }
       }
     });
@@ -47,7 +47,7 @@ export function ImportPreview({ data, onImport, onCancel }: ImportPreviewProps) 
         SaleImportSchema.parse(row);
       } catch (error) {
         if (error instanceof ZodError) {
-          errors[`transaction_${idx}`] = error.errors.map(e => `${e.path.join('.')}: ${e.message}`);
+          errors[`transaction_${idx}`] = error.issues.map(e => `${e.path.join('.')}: ${e.message}`);
         }
       }
     });

@@ -1,0 +1,27 @@
+
+> geomarketing-platform@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/lib/validators/importSchema.ts:17:13
+Type error: No overload matches this call.
+  Overload 1 of 2, '(values: [string, ...string[]], params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Object literal may only specify known properties, and 'errorMap' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; }'.
+  Overload 2 of 2, '(entries: Readonly<Record<string, EnumValue>>, params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
+    Argument of type '[string, ...string[]]' is not assignable to parameter of type 'Readonly<Record<string, EnumValue>>'.
+      Index signature for type 'string' is missing in type '[string, ...string[]]'.
+
+[0m [90m 15 |[39m   razao_social[33m:[39m z[33m.[39mstring()[33m.[39mmin([35m3[39m[33m,[39m [32m'Razão social obrigatória'[39m)[33m,[39m[0m
+[0m [90m 16 |[39m   cidade[33m:[39m z[33m.[39mstring()[33m.[39mmin([35m2[39m[33m,[39m [32m'Cidade obrigatória'[39m)[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 17 |[39m   estado[33m:[39m z[33m.[39m[36menum[39m(brazilianStates [36mas[39m [string[33m,[39m [33m...[39mstring[]][33m,[39m {[0m
+[0m [90m    |[39m             [31m[1m^[22m[39m[0m
+[0m [90m 18 |[39m     errorMap[33m:[39m () [33m=>[39m ({ message[33m:[39m [32m'Estado inválido'[39m })[0m
+[0m [90m 19 |[39m   })[33m,[39m[0m
+[0m [90m 20 |[39m   endereco[33m:[39m z[33m.[39mstring()[33m.[39moptional()[33m,[39m[0m
+Next.js build worker exited with code: 1 and signal: null

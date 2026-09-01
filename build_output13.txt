@@ -1,0 +1,22 @@
+
+> geomarketing-platform@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/jobs/reportScheduler.ts:56:17
+Type error: 'sales' is declared but its value is never read.
+
+[0m [90m 54 |[39m             [33m.[39meq([32m'brand_id'[39m[33m,[39m brand[33m.[39mid)[33m;[39m[0m
+[0m [90m 55 |[39m[0m
+[0m[31m[1m>[22m[39m[90m 56 |[39m           [36mconst[39m { data[33m:[39m sales } [33m=[39m [36mawait[39m supabase[0m
+[0m [90m    |[39m                 [31m[1m^[22m[39m[0m
+[0m [90m 57 |[39m             [33m.[39m[36mfrom[39m([32m'sales'[39m)[0m
+[0m [90m 58 |[39m             [33m.[39mselect([32m'amount, created_at, product'[39m)[0m
+[0m [90m 59 |[39m             [33m.[39meq([32m'brand_id'[39m[33m,[39m brand[33m.[39mid)[33m;[39m[0m
+Next.js build worker exited with code: 1 and signal: null

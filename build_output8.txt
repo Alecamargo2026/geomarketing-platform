@@ -1,0 +1,23 @@
+
+> geomarketing-platform@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/app/api/reports/generate/route.ts:96:9
+Type error: Type '{ cnpj: any; name: any; revenue: any; status: any; }[]' is not assignable to type '{ cnpj: string; razao_social: string; cidade: string; estado: string; faturamento: number; status: string; }[]'.
+  Type '{ cnpj: any; name: any; revenue: any; status: any; }' is missing the following properties from type '{ cnpj: string; razao_social: string; cidade: string; estado: string; faturamento: number; status: string; }': razao_social, cidade, estado, faturamento
+
+[0m [90m 94 |[39m     } [36melse[39m [36mif[39m (format [33m===[39m [32m'excel'[39m) {[0m
+[0m [90m 95 |[39m       [36mconst[39m excelBuffer [33m=[39m generateExcelBuffer({[0m
+[0m[31m[1m>[22m[39m[90m 96 |[39m         customers[33m:[39m customers [33m||[39m [][33m,[39m[0m
+[0m [90m    |[39m         [31m[1m^[22m[39m[0m
+[0m [90m 97 |[39m         sales[33m:[39m sales [33m||[39m [][33m,[39m[0m
+[0m [90m 98 |[39m         gaps[33m:[39m gapAnalysis[33m,[39m[0m
+[0m [90m 99 |[39m         summary[33m:[39m {[0m
+Next.js build worker exited with code: 1 and signal: null

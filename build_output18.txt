@@ -1,0 +1,22 @@
+
+> geomarketing-platform@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/app/api/audit-logs/route.ts:63:29
+Type error: Cannot find name 'supabase'.
+
+[0m [90m 61 |[39m     [36mconst[39m body [33m=[39m [36mawait[39m request[33m.[39mjson()[33m;[39m[0m
+[0m [90m 62 |[39m[0m
+[0m[31m[1m>[22m[39m[90m 63 |[39m     [36mconst[39m { error } [33m=[39m [36mawait[39m supabase[0m
+[0m [90m    |[39m                             [31m[1m^[22m[39m[0m
+[0m [90m 64 |[39m       [33m.[39m[36mfrom[39m([32m'audit_logs'[39m)[0m
+[0m [90m 65 |[39m       [33m.[39minsert([[0m
+[0m [90m 66 |[39m         {[0m
+Next.js build worker exited with code: 1 and signal: null

@@ -23,7 +23,7 @@ export interface Cluster {
 
 export function useMapClustering(points: ClusterPoint[], zoom: number) {
   const [clusters, setClusters] = useState<Cluster[]>([]);
-  const [supercluster, setSupercluster] = useState<Supercluster<ClusterPoint, any> | null>(null);
+  const [supercluster, setSupercluster] = useState<any>(null);
 
   // Inicializar Supercluster
   useEffect(() => {

@@ -1,0 +1,22 @@
+
+> geomarketing-platform@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/app/api/reports/generate/route.ts:14:11
+Type error: 'type' is declared but its value is never read.
+
+[0m [90m 12 |[39m   [36mtry[39m {[0m
+[0m [90m 13 |[39m     [36mconst[39m searchParams [33m=[39m request[33m.[39mnextUrl[33m.[39msearchParams[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 14 |[39m     [36mconst[39m type [33m=[39m searchParams[33m.[39m[36mget[39m([32m'type'[39m) [33m||[39m [32m'monthly'[39m[33m;[39m[0m
+[0m [90m    |[39m           [31m[1m^[22m[39m[0m
+[0m [90m 15 |[39m     [36mconst[39m brandId [33m=[39m searchParams[33m.[39m[36mget[39m([32m'brand'[39m)[33m;[39m[0m
+[0m [90m 16 |[39m     [36mconst[39m month [33m=[39m searchParams[33m.[39m[36mget[39m([32m'month'[39m)[33m;[39m[0m
+[0m [90m 17 |[39m     [36mconst[39m format [33m=[39m searchParams[33m.[39m[36mget[39m([32m'format'[39m) [33m||[39m [32m'pdf'[39m[33m;[39m[0m
+Next.js build worker exited with code: 1 and signal: null

@@ -1,0 +1,23 @@
+
+> geomarketing-platform@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/app/api/reports/generate/route.ts:110:9
+Type error: Type '{ city: string; state: string; potential: number; revenue: number; gap: number; }[]' is not assignable to type '{ cidade: string; estado: string; potencial: number; faturamento: number; gap: number; }[]'.
+  Type '{ city: string; state: string; potential: number; revenue: number; gap: number; }' is missing the following properties from type '{ cidade: string; estado: string; potencial: number; faturamento: number; gap: number; }': cidade, estado, potencial, faturamento
+
+[0m [90m 108 |[39m           produto[33m:[39m s[33m.[39mproduct [33m||[39m [32m''[39m[33m,[39m[0m
+[0m [90m 109 |[39m         }))[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 110 |[39m         gaps[33m:[39m gapAnalysis[33m,[39m[0m
+[0m [90m     |[39m         [31m[1m^[22m[39m[0m
+[0m [90m 111 |[39m         summary[33m:[39m {[0m
+[0m [90m 112 |[39m           totalRevenue[33m,[39m[0m
+[0m [90m 113 |[39m           coverage[33m,[39m[0m
+Next.js build worker exited with code: 1 and signal: null
