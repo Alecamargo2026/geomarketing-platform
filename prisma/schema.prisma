@@ -32,6 +32,7 @@ model Tenant {
   geoMetadata GeoMetadata[] @relation("TenantGeoMetadata")
   geoCompetitors GeoCompetitor[] @relation("TenantGeoCompetitors")
   geoSyncLogs GeoSyncLog[] @relation("TenantGeoSyncLogs")
+  auditLogs AuditLog[]
 
   @@map("tenants")
 }
@@ -42,7 +43,7 @@ model User {
   email     String   @unique
   password  String
   name      String
-  role      String   @default("user") // admin, manager, user
+  role      String   @default("representante") // admin, manager, representante
   avatar    String?
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -51,6 +52,7 @@ model User {
   // Relations
   tenantId String
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  auditLogs AuditLog[]
 
   @@index([tenantId])
   @@map("users")
@@ -94,6 +96,7 @@ model Customer {
   latitude      Float?
   longitude     Float?
   representante String?
+  representanteId String?
   segmento      String?
   canal         String?
   status        String   @default("ativo") // ativo, inativo, prospecto
@@ -113,6 +116,7 @@ model Customer {
   @@index([brandId])
   @@index([cidade])
   @@index([estado])
+  @@index([representanteId])
   @@map("customers")
 }
 
@@ -195,7 +199,6 @@ model GeoNeighborhood {
   // Relations
   customerLocations         CustomerLocation[]
   geoCompetitors            GeoCompetitor[]
-  geoMetadata               GeoMetadata[]
   
   @@unique([tenantId, name, cityName, state])
   @@index([tenantId])
@@ -328,4 +331,25 @@ model GeoSyncLog {
   @@index([status])
   @@index([createdAt])
   @@map("geo_sync_logs")
+}
+
+// AuditLog (Log de Auditoria)
+model AuditLog {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action        String   // INSERT, UPDATE, DELETE
+  entityType    String   // customers, sales, etc
+  entityId      String
+  oldValues     Json?
+  newValues     Json?
+  timestamp     DateTime @default(now())
+  tenantId      String
+  tenant        Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([timestamp])
+  @@index([tenantId])
+  @@index([entityType])
+  @@map("audit_logs")
 }
