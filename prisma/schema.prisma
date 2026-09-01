@@ -33,6 +33,7 @@ model Tenant {
   geoCompetitors GeoCompetitor[] @relation("TenantGeoCompetitors")
   geoSyncLogs GeoSyncLog[] @relation("TenantGeoSyncLogs")
   auditLogs AuditLog[]
+  importLogs ImportLog[] @relation("TenantImportLogs")
 
   @@map("tenants")
 }
@@ -52,6 +53,8 @@ model User {
   // Relations
   tenantId String
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  customers Customer[] @relation("CustomerRepresentative")
+  sales Sale[] @relation("SaleRepresentative")
   auditLogs AuditLog[]
 
   @@index([tenantId])
@@ -95,8 +98,6 @@ model Customer {
   estado        String
   latitude      Float?
   longitude     Float?
-  representante String?
-  representanteId String?
   segmento      String?
   canal         String?
   status        String   @default("ativo") // ativo, inativo, prospecto
@@ -108,6 +109,8 @@ model Customer {
   tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   brandId  String
   brand    Brand @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  representanteId String?
+  representante User? @relation("CustomerRepresentative", fields: [representanteId], references: [id], onDelete: SetNull)
   sales    Sale[]
   customerLocations CustomerLocation[]
 
@@ -126,7 +129,6 @@ model Sale {
   dataEmissao   DateTime
   valorTotal    Float
   quantidade    Int?
-  representante String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -137,6 +139,8 @@ model Sale {
   customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
   brandId    String
   brand      Brand @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  representanteId String?
+  representante User? @relation("SaleRepresentative", fields: [representanteId], references: [id], onDelete: SetNull)
 
   @@index([tenantId])
   @@index([customerId])
@@ -338,11 +342,14 @@ model AuditLog {
   id            String   @id @default(cuid())
   userId        String
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  action        String   // INSERT, UPDATE, DELETE
+  action        String   // INSERT, UPDATE, DELETE, LOGIN, LOGOUT, IMPORT, EXPORT, PAGE_VIEW
   entityType    String   // customers, sales, etc
   entityId      String
   oldValues     Json?
   newValues     Json?
+  details       String?
+  ipAddress     String?
+  userAgent     String?
   timestamp     DateTime @default(now())
   tenantId      String
   tenant        Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
@@ -351,5 +358,34 @@ model AuditLog {
   @@index([timestamp])
   @@index([tenantId])
   @@index([entityType])
+  @@index([action])
   @@map("audit_logs")
+}
+
+// ImportLog (Log de Importações)
+model ImportLog {
+  id               String   @id @default(cuid())
+  tenantId         String
+  tenant           Tenant   @relation("TenantImportLogs", fields: [tenantId], references: [id], onDelete: Cascade)
+  userId           String
+  brandId          String
+  filename         String
+  contentType      String?
+  fileSize         Int?
+  status           String   @default("processing") // processing, completed, failed
+  recordsProcessed Int      @default(0)
+  recordsInserted  Int      @default(0)
+  recordsUpdated   Int      @default(0)
+  recordsFailed    Int      @default(0)
+  errors           Json?
+  warnings         Json?
+  completedAt      DateTime?
+  createdAt        DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([userId])
+  @@index([brandId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("import_logs")
 }

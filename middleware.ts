@@ -1,59 +1,91 @@
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+
+const PUBLIC_ROUTES = ['/auth/login', '/auth/register', '/auth/callback', '/'];
 
 export async function middleware(request: NextRequest) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const { pathname } = request.nextUrl;
 
-  if (!supabaseUrl || !supabaseAnonKey) {
+  // Allow public routes
+  if (PUBLIC_ROUTES.some(route => pathname === route || pathname.startsWith(route + '/'))) {
     return NextResponse.next();
   }
 
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  // Check for auth token
+  const token = request.cookies.get('supabase-auth-token')?.value;
+  if (!token) {
+    return NextResponse.redirect(new URL('/auth/login', request.url));
+  }
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  try {
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
 
-  // Protect dashboard routes
-  if (request.nextUrl.pathname.startsWith('/dashboard')) {
-    if (!session) {
+    // Get user from token
+    const { data: { user }, error } = await supabase.auth.admin.getUserById(
+      token.split('.')[0]
+    );
+
+    if (error || !user) {
       return NextResponse.redirect(new URL('/auth/login', request.url));
     }
-  }
 
-  // Protect map routes
-  if (request.nextUrl.pathname.startsWith('/map')) {
-    if (!session) {
+    // Get user data from database
+    const { data: userData } = await supabase
+      .from('users')
+      .select('id, role, tenant_id, email, name')
+      .eq('id', user.id)
+      .single();
+
+    if (!userData) {
       return NextResponse.redirect(new URL('/auth/login', request.url));
     }
-  }
 
-  // Protect import routes
-  if (request.nextUrl.pathname.startsWith('/import')) {
-    if (!session) {
-      return NextResponse.redirect(new URL('/auth/login', request.url));
+    // Create request headers with auth info
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set('x-user-id', user.id);
+    requestHeaders.set('x-user-role', userData.role || 'user');
+    requestHeaders.set('x-tenant-id', userData.tenant_id || '');
+    requestHeaders.set('x-user-email', userData.email || '');
+
+    // Log page view to audit logs
+    const auditLog = {
+      tenant_id: userData.tenant_id,
+      user_id: user.id,
+      action: 'PAGE_VIEW',
+      entity_type: 'Page',
+      entity_id: pathname,
+      details: `View ${pathname}`,
+      ip_address: request.ip || 'unknown',
+      user_agent: request.headers.get('user-agent') || 'unknown',
+      timestamp: new Date().toISOString(),
+    };
+
+    try {
+      await supabase
+        .from('audit_logs')
+        .insert([auditLog]);
+    } catch (err) {
+      console.error('Failed to log audit:', err);
     }
-  }
 
-  // Protect settings routes
-  if (request.nextUrl.pathname.startsWith('/settings')) {
-    if (!session) {
-      return NextResponse.redirect(new URL('/auth/login', request.url));
-    }
-  }
+    const response = NextResponse.next({
+      request: {
+        headers: requestHeaders,
+      },
+    });
 
-  // Redirect authenticated users away from auth pages
-  if (request.nextUrl.pathname.startsWith('/auth/login') || request.nextUrl.pathname.startsWith('/auth/register')) {
-    if (session) {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
-    }
+    return response;
+  } catch (err) {
+    console.error('Middleware error:', err);
+    return NextResponse.redirect(new URL('/auth/login', request.url));
   }
-
-  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/map/:path*', '/import/:path*', '/settings/:path*', '/auth/:path*'],
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|public).*)',
+  ],
 };
