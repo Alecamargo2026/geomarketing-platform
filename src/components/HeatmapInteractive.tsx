@@ -3,7 +3,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from 'react-leaflet';
 import Supercluster from 'supercluster';
-import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 interface Customer {
@@ -81,7 +80,7 @@ function MapContent({ customers, onCustomerClick }: HeatmapProps) {
     prospect: true,
     default: true,
   });
-  const superclusterRef = useRef<Supercluster<ClusterPoint['properties']> | null>(null);
+  const superclusterRef = useRef<any>(null);
 
   useEffect(() => {
     if (!customers.length) return;

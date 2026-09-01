@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
       gapCount,
       customers: (customers || []).slice(0, 10).map((c: any) => ({
         cnpj: c.cnpj,
-        razao_social: c.razaoSocial,
+        razaoSocial: c.razaoSocial,
         faturamento: c.revenue || 0,
         status: c.status,
         representante: c.representante,
@@ -103,7 +103,7 @@ export async function GET(request: NextRequest) {
         coverage,
         gapCount,
       },
-    };
+    } as any;
 
     if (format === 'pdf') {
       const pdfBuffer = generatePDFReport(reportData);

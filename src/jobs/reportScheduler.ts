@@ -71,7 +71,7 @@ export function startReportSchedulerJob() {
                 .eq('tenant_id', tenant.id);
 
               // Buscar vendas do período
-              const { data: sales } = await supabase
+              const { data: _sales } = await supabase
                 .from('sales')
                 .select('amount, created_at, product')
                 .eq('brand_id', brand.id)

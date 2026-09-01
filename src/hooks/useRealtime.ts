@@ -3,16 +3,16 @@ import { useQueryClient } from '@tanstack/react-query';
 import { createClient } from '@supabase/supabase-js';
 import toast from 'react-hot-toast';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
 export function useRealtimeCustomers(brandId: string | null) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!brandId) return;
+
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
 
     const channel = supabase.channel(`customers-brand-${brandId}`, {
       config: { broadcast: { self: true } },
@@ -35,7 +35,7 @@ export function useRealtimeCustomers(brandId: string | null) {
           if (payload.eventType === 'INSERT') {
             toast.success(`Novo cliente: ${payload.new.razaoSocial || 'Sem nome'}`);
           } else if (payload.eventType === 'UPDATE') {
-            toast.info(`Cliente atualizado: ${payload.new.razaoSocial || 'Sem nome'}`);
+            toast.success(`Cliente atualizado: ${payload.new.razaoSocial || 'Sem nome'}`);
           } else if (payload.eventType === 'DELETE') {
             toast.error(`Cliente removido: ${payload.old.razaoSocial || 'Sem nome'}`);
           }
@@ -54,6 +54,11 @@ export function useRealtimeSales(brandId: string | null) {
 
   useEffect(() => {
     if (!brandId) return;
+
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
 
     const channel = supabase.channel(`sales-brand-${brandId}`, {
       config: { broadcast: { self: true } },
@@ -91,6 +96,11 @@ export function useRealtimeAuditLogs() {
   const queryClient = useQueryClient();
 
   useEffect(() => {
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
     const channel = supabase.channel('audit-logs', {
       config: { broadcast: { self: true } },
     });
@@ -103,10 +113,10 @@ export function useRealtimeAuditLogs() {
           schema: 'public',
           table: 'audit_logs',
         },
-        (payload: any) => {
+        ((_payload: any) => {
           // Invalidar cache para atualizar dados
           queryClient.invalidateQueries({ queryKey: ['audit-logs'] });
-        }
+        })
       )
       .subscribe();
 
