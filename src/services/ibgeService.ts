@@ -1,189 +1,103 @@
-import axios from 'axios'
-import Decimal from 'decimal.js'
-
-const IBGE_BASE_URL = 'https://servicodados.ibge.gov.br/api/v1'
-
-interface Municipality {
-  id: number
-  nome: string
+interface IBGEMunicipioData {
+  id: number;
+  nome: string;
   microrregiao: {
-    id: number
-    nome: string
+    id: number;
+    nome: string;
     mesorregiao: {
-      id: number
-      nome: string
-      UF: {
-        id: number
-        nome: string
-        sigla: string
-      }
+      id: number;
+      nome: string;
+      regiao: {
+        id: number;
+        nome: string;
+        sigla: string;
+      };
+    };
+  };
+}
+
+const IBGE_BASE_URL = 'https://servicodados.ibge.gov.br/api/v1';
+const CACHE_DURATION = 24 * 60 * 60 * 1000;
+
+class IBGECache {
+  private cache: Map<string, { data: any; timestamp: number }> = new Map();
+
+  get(key: string) {
+    const item = this.cache.get(key);
+    if (!item) return null;
+
+    if (Date.now() - item.timestamp > CACHE_DURATION) {
+      this.cache.delete(key);
+      return null;
     }
+
+    return item.data;
+  }
+
+  set(key: string, data: any) {
+    this.cache.set(key, { data, timestamp: Date.now() });
   }
 }
 
-interface DemographicData {
-  ibgeCode: number
-  cityName: string
-  state: string
-  region: string
-  population: number
-  areaKm2: number
-  density: number
-  pibTotal: number
-  pibPerCapita: number
-  incomePerCapita: number
-  numCompanies: number
-  commercialDensity: number
-  potentialScore: number
-}
+const cache = new IBGECache();
 
-class IBGEService {
-  /**
-   * Busca todos os municípios do Brasil
-   */
-  async fetchAllMunicipalities(): Promise<Municipality[]> {
-    try {
-      const response = await axios.get(`${IBGE_BASE_URL}/localidades/municipios`)
-      return response.data
-    } catch (error) {
-      console.error('Erro ao buscar municípios:', error)
-      throw error
-    }
-  }
+export async function getIBGEData(city: string, state: string) {
+  const cacheKey = `ibge_${city}_${state}`;
+  const cached = cache.get(cacheKey);
+  if (cached) return cached;
 
-  /**
-   * Busca dados de um município específico
-   */
-  async fetchMunicipalityData(ibgeCode: number): Promise<Municipality | null> {
-    try {
-      const response = await axios.get(`${IBGE_BASE_URL}/localidades/municipios/${ibgeCode}`)
-      return response.data
-    } catch (error) {
-      console.error(`Erro ao buscar município ${ibgeCode}:`, error)
-      return null
-    }
-  }
+  try {
+    const response = await fetch(
+      `${IBGE_BASE_URL}/municipios?q=${encodeURIComponent(city)}&uf=${state}`
+    );
 
-  /**
-   * Calcula score de potencial baseado em múltiplos fatores
-   */
-  calculatePotentialScore(data: Partial<DemographicData>): number {
-    try {
-      // Valores máximos para normalização (Brasil)
-      const maxPopulation = 12000000 // São Paulo
-      const maxPibPerCapita = 80000 // Regiões mais ricas
-      const maxDensity = 8000 // Densidade máxima
-      const maxCompanies = 500000 // Máximo de empresas
-
-      const population = new Decimal(data.population || 0)
-      const pibPerCapita = new Decimal(data.pibPerCapita || 0)
-      const density = new Decimal(data.density || 0)
-      const numCompanies = new Decimal(data.numCompanies || 0)
-
-      const score = population
-        .dividedBy(maxPopulation)
-        .times(0.25)
-        .plus(
-          pibPerCapita
-            .dividedBy(maxPibPerCapita)
-            .times(0.25)
-        )
-        .plus(
-          density
-            .dividedBy(maxDensity)
-            .times(0.20)
-        )
-        .plus(
-          numCompanies
-            .dividedBy(maxCompanies)
-            .times(0.30)
-        )
-        .times(100)
-        .toNumber()
-
-      return Math.min(100, Math.max(0, score))
-    } catch (error) {
-      console.error('Erro ao calcular score de potencial:', error)
-      return 0
-    }
-  }
-
-  /**
-   * Enriquece dados de um município com informações demográficas
-   */
-  async enrichMunicipalityData(municipality: Municipality): Promise<DemographicData | null> {
-    try {
-      const ibgeCode = municipality.id
-      const cityName = municipality.nome
-      const state = municipality.microrregiao.mesorregiao.UF.sigla
-      const region = municipality.microrregiao.mesorregiao.nome
-
-      // Dados simulados (em produção, buscar de APIs reais)
-      // Para este MVP, usamos dados estimados baseados em padrões IBGE
-      const population = Math.floor(Math.random() * 500000) + 10000
-      const areaKm2 = Math.floor(Math.random() * 5000) + 100
-      const density = population / areaKm2
-      const pibPerCapita = Math.floor(Math.random() * 50000) + 15000
-      const pibTotal = population * pibPerCapita
-      const incomePerCapita = pibPerCapita * 0.7 // Renda é ~70% do PIB per capita
-      const numCompanies = Math.floor(population / 50) // ~1 empresa a cada 50 pessoas
-      const commercialDensity = numCompanies / areaKm2
-
-      const demographicData: DemographicData = {
-        ibgeCode,
-        cityName,
-        state,
-        region,
-        population,
-        areaKm2,
-        density: Math.round(density * 100) / 100,
-        pibTotal: Math.round(pibTotal),
-        pibPerCapita,
-        incomePerCapita: Math.round(incomePerCapita),
-        numCompanies,
-        commercialDensity: Math.round(commercialDensity * 100) / 100,
-        potentialScore: 0, // Será calculado abaixo
-      }
-
-      // Calcular score de potencial
-      demographicData.potentialScore = this.calculatePotentialScore(demographicData)
-
-      return demographicData
-    } catch (error) {
-      console.error('Erro ao enriquecer dados do município:', error)
-      return null
-    }
-  }
-
-  /**
-   * Busca dados demográficos para múltiplos municípios
-   */
-  async fetchDemographicsForCities(ibgeCodes: number[]): Promise<DemographicData[]> {
-    const results: DemographicData[] = []
-
-    for (const code of ibgeCodes) {
-      const municipality = await this.fetchMunicipalityData(code)
-      if (municipality) {
-        const enriched = await this.enrichMunicipalityData(municipality)
-        if (enriched) {
-          results.push(enriched)
-        }
-      }
+    if (!response.ok) {
+      throw new Error(`IBGE API error: ${response.status}`);
     }
 
-    return results
-  }
+    const data: IBGEMunicipioData[] = await response.json();
 
-  /**
-   * Classifica potencial em categorias
-   */
-  classifyPotential(score: number): string {
-    if (score >= 80) return 'Muito Alto'
-    if (score >= 60) return 'Alto'
-    if (score >= 40) return 'Médio'
-    if (score >= 20) return 'Baixo'
-    return 'Muito Baixo'
+    if (data.length === 0) {
+      return null;
+    }
+
+    const municipio = data[0];
+
+    const result = {
+      id: municipio.id,
+      nome: municipio.nome,
+      estado: state,
+      microrregiao: municipio.microrregiao.nome,
+      mesorregiao: municipio.microrregiao.mesorregiao.nome,
+      regiao: municipio.microrregiao.mesorregiao.regiao.nome,
+      regiao_sigla: municipio.microrregiao.mesorregiao.regiao.sigla,
+    };
+
+    cache.set(cacheKey, result);
+    return result;
+  } catch (error) {
+    console.error('Erro ao buscar dados IBGE:', error);
+    return null;
   }
 }
 
-export const ibgeService = new IBGEService()
+export function calculatePotential(
+  population: number,
+  gdpPerCapita: number,
+  commercialRate: number = 0.15
+): number {
+  if (!population || !gdpPerCapita) return 0;
+  return (population * gdpPerCapita * commercialRate) / 100;
+}
+
+export function calculateGap(potential: number, revenue: number) {
+  if (!potential || potential === 0) return { percentage: 0, reais: 0 };
+
+  const gapPercentage = ((potential - revenue) / potential) * 100;
+  const gapReais = potential - revenue;
+
+  return {
+    percentage: Math.max(0, gapPercentage),
+    reais: Math.max(0, gapReais),
+  };
+}
